@@ -1,0 +1,4 @@
+Maximizes current browser window.
+
+*Example:*
+| Maximize Window |
