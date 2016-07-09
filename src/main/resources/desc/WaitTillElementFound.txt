@@ -8,5 +8,5 @@ Example:
 
 =>
 
-| Wait for the element for found, timeout is the configured implicit wait.
-| Wait for the element for found, polling every 200 milliseconds, and timeout of 20 seconds.
+| Wait until the element is found, timeout is the configured implicit wait.
+| Wait until the element is found, polling every 200 milliseconds, and timeout of 20 seconds.

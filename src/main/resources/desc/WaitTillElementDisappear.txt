@@ -1,0 +1,12 @@
+Waits until element specified with locator disappears on current page.
+
+Fails if timeout expires before the element disappears.
+
+Example:
+| Wait Till Element Disappear | css=#id |
+| Wait Till Element Disappear | css=#id | 200 | 20000 |
+
+=>
+
+| Wait for the element to disappear, timeout is the configured implicit wait.
+| Wait for the element to disappear, polling every 200 milliseconds, and timeout of 20 seconds.
