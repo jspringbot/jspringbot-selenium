@@ -2769,6 +2769,14 @@ public class SeleniumHelper {
         WebElement el = finder.find(locator);
         el.clear();
         el.sendKeys(toKeys(text));
+
+        // linux fix for chrome to try again
+        // only do it if not same
+        if(!StringUtils.equals(text, el.getText())) {
+            LOG.info("Not same as input text, do it again.");
+            el.clear();
+            el.sendKeys(toKeys(text));
+        }
     }
 
     private boolean pageContains(String text) {
