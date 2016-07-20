@@ -18,7 +18,6 @@
 
 package org.jspringbot.keyword.selenium;
 
-import com.thoughtworks.selenium.webdriven.WebDriverBackedSelenium;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -2487,6 +2486,69 @@ public class SeleniumHelper {
         }
     }
 
+    public void waitTillTextMatches(String locator, String regex) throws Exception {
+        waitTillTextMatches(locator, regex, DEFAULT_POLL_MILLIS, TimeUnit.SECONDS.toMillis(implicitWaitInSeconds));
+    }
+
+    public void waitTillTextMatches(final String locator, final String regex, final long pollMillis, final long timeoutMillis) throws Exception {
+        doImplicitWaitInSeconds(1, new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                waitTillTextMatchesInternal(locator, regex, pollMillis, timeoutMillis);
+
+                return null;
+            }
+        });
+    }
+
+    private void waitTillTextMatchesInternal(String locator, String regex, long pollMillis, long timeoutMillis) {
+        LOG.keywordAppender()
+                .appendLocator(locator)
+                .appendArgument("pollMillis", pollMillis)
+                .appendArgument("timeoutMillis", timeoutMillis);
+
+        long start = System.currentTimeMillis();
+        long elapse = -1;
+        WebElement el = null;
+        Exception lastException = null;
+        boolean matches = false;
+
+        do {
+            if(elapse != -1) {
+                try {
+                    Thread.sleep(pollMillis);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            try {
+
+                el = finder.find(locator, false);
+                if(el != null && el.getText().matches(regex)) {
+                    LOG.info(String.format("(%d ms) Text in '%s' matches Regex '%s'.", System.currentTimeMillis() - start, locator, regex));
+                    return;
+                } else {
+                    LOG.info(String.format("(%d ms) Text in '%s' does not match Regex '%s'.", System.currentTimeMillis() - start, locator, regex));
+                }
+            } catch(Exception e) {
+                LOG.info(String.format("(%d ms) Text in '%s' did match Regex '%s'.", System.currentTimeMillis() - start, locator, regex));
+
+                lastException = e;
+                try {
+                    Thread.sleep(pollMillis);
+                } catch (InterruptedException ignore) {
+                }
+            }
+
+            elapse = System.currentTimeMillis() - start;
+        } while(elapse < timeoutMillis);
+
+        if(el == null) {
+            throw new IllegalStateException(String.format("timeout for locating '%s' and matching '%s' (%d ms) reached.", locator, regex, timeoutMillis), lastException);
+        }
+    }
+
     private <T> T doImplicitWaitInSeconds(int timeoutInSeconds, Callable<T> callable) throws Exception {
         driver.manage().timeouts().implicitlyWait(timeoutInSeconds, TimeUnit.SECONDS);
 
@@ -2769,14 +2831,6 @@ public class SeleniumHelper {
         WebElement el = finder.find(locator);
         el.clear();
         el.sendKeys(toKeys(text));
-
-        // linux fix for chrome to try again
-        // only do it if not same
-        if(!StringUtils.equals(text, el.getText())) {
-            LOG.info("Not same as input text, do it again.");
-            el.clear();
-            el.sendKeys(toKeys(text));
-        }
     }
 
     private boolean pageContains(String text) {

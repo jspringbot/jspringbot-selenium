@@ -1,0 +1,12 @@
+Waits until text of specified locator matches regular expression
+
+Waits until text matches regular expression
+
+Example:
+| Wait Till Text Matches | css=#id | regex |
+| Wait Till Text Matches | css=#id | regex | 200 | 20000 |
+
+=>
+
+| Wait for text to match regular expression, timeout is the configured implicit wait.
+| Wait for text to match regular expression, polling every 200 milliseconds, and timeout of 20 seconds.
