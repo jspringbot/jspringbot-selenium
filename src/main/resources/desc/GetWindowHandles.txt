@@ -6,10 +6,10 @@ Sample Custom Keyword:
 | | ${window}=          | Get Window Handle             | |
 | | EL Add Variable     | parentWindow                  | $[var('window')] |
 | | ${windowHandles}=   | Get Window Handles            | |
-| | ${windowIndices}=   | EL Evaluate                   | | $[col:size(var('windowHandles'))] |
+| | ${windowIndices}=   | EL Evaluate                   | $[col:size(var('windowHandles'))] |
 | | EL Should Be True   | $[var('windowIndices') gt 1]  | |
-| | EL Add Variable     | lastOpenedWindowIndex         | | $[i:var('windowIndices') - 1] |
-| | EL Add Variable     | lastOpenedWindow              | | $[var('windowHandles')[lastOpenedWindowIndex]] |
+| | EL Add Variable     | lastOpenedWindowIndex         | $[i:var('windowIndices') - 1] |
+| | EL Add Variable     | lastOpenedWindow              | $[var('windowHandles')[lastOpenedWindowIndex]] |
 | | Select Window       | $[var('windowHandles')[lastOpenedWindowIndex]] | |
 
 =>
