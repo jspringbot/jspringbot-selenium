@@ -1,1 +1,21 @@
 Get the window handles. This are unique identifier for the browser windows.
+
+Sample Custom Keyword:
+
+| Go To Newly Opened Window | | |
+| | ${window}=          | Get Window Handle             | |
+| | EL Add Variable     | parentWindow                  | $[var('window')] |
+| | ${windowHandles}=   | Get Window Handles            | |
+| | ${windowIndices}=   | EL Evaluate                   | | $[col:size(var('windowHandles'))] |
+| | EL Should Be True   | $[var('windowIndices') gt 1]  | |
+| | EL Add Variable     | lastOpenedWindowIndex         | | $[i:var('windowIndices') - 1] |
+| | EL Add Variable     | lastOpenedWindow              | | $[var('windowHandles')[lastOpenedWindowIndex]] |
+| | Select Window       | $[var('windowHandles')[lastOpenedWindowIndex]] | |
+
+=>
+| Saves the parent window value first in case we want to go back to it later
+| Saves the number of windows
+| Checks if the number of windows is more than 1
+| Saves the last open window index
+| Selects the last opened window from the list of window handles
+

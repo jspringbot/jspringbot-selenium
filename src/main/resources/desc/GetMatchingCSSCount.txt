@@ -1,3 +1,10 @@
 Returns number of elements matching CSS
 
 If you wish to assert the number of matching elements, use `CSS Should Match X Times`.
+
+Example:
+| ${listCount}= | Get Matching CSS Count | css=div.list li |
+
+=>
+
+| Returns the count of item specified by the locator.

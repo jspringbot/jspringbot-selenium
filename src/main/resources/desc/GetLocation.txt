@@ -1,1 +1,9 @@
 Returns the current location.
+
+Example:
+| Navigate To | http://jspringbot.org |
+| ${currentURL}= | Get Location |
+| Log | ${currentURL} |
+
+=>
+| Will log "http://jspringbot.org/".

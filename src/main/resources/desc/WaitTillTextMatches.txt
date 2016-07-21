@@ -5,8 +5,10 @@ Waits until text matches regular expression
 Example:
 | Wait Till Text Matches | css=#id | regex |
 | Wait Till Text Matches | css=#id | regex | 200 | 20000 |
+| Wait Till Text Matches | id=amountField | ([0-9]+,)*[0-9]+(\\.[0-9]+)? |
 
 =>
 
 | Wait for text to match regular expression, timeout is the configured implicit wait.
 | Wait for text to match regular expression, polling every 200 milliseconds, and timeout of 20 seconds.
+| Wait for amount field's text to be in money format, timeout is the configured implicit wait.

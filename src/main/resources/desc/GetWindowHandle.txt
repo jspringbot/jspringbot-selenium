@@ -1,1 +1,9 @@
 Get the current window handle.
+
+Example:
+| ${window}=      | Get Window Handle | |
+| EL Add Variable | parentWindow      | $[var('window')] |
+
+=>
+
+| Gets and saves the parent window handle to parentWindow variable
