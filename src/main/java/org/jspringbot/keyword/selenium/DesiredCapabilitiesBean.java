@@ -43,6 +43,9 @@ public class DesiredCapabilitiesBean implements InitializingBean {
 
     private String chromeDriverVersion;
 
+    private String ieDriverVersion;
+
+
     public DesiredCapabilitiesBean(DesiredCapabilities capabilities) {
         this.capabilities = capabilities;
     }
@@ -53,6 +56,10 @@ public class DesiredCapabilitiesBean implements InitializingBean {
 
     public void setChromeDriverVersion(String chromeDriverVersion) {
         this.chromeDriverVersion = chromeDriverVersion;
+    }
+
+    public void setIeDriverVersion(String ieDriverVersion) {
+        this.ieDriverVersion = ieDriverVersion;
     }
 
     public void setBaseDir(String baseStrDir) {
@@ -73,17 +80,7 @@ public class DesiredCapabilitiesBean implements InitializingBean {
             throw new IllegalArgumentException("Unsupported OS " + osType.name());
         }
 
-        File driverDir;
-        if(baseDir != null) {
-            driverDir = baseDir;
-        } else {
-            String userHome = System.getProperty("user.home");
-            driverDir = new File(userHome, "jspringbot");
-
-            if(!driverDir.isDirectory()) {
-                driverDir.mkdirs();
-            }
-        }
+        File driverDir = createDriverDir();
 
         File downloadedFile = new File(driverDir, chromeDriver.getFilename());
 
@@ -99,6 +96,39 @@ public class DesiredCapabilitiesBean implements InitializingBean {
         driver.setExecutable(true);
 
         System.setProperty("webdriver.chrome.driver", driver.getAbsolutePath());
+    }
+
+    private File createDriverDir() {
+        File driverDir;
+        if(baseDir != null) {
+            driverDir = baseDir;
+        } else {
+            String userHome = System.getProperty("user.home");
+            driverDir = new File(userHome, "jspringbot");
+
+            if(!driverDir.isDirectory()) {
+                driverDir.mkdirs();
+            }
+        }
+        return driverDir;
+    }
+
+    public void setIeDriver(Resource resource) throws IOException {
+        File driverDir = createDriverDir();
+
+        File downloadedFile = new File(driverDir, resource.getFilename());
+        if(!downloadedFile.isFile()) {
+            LOGGER.info("Internet driver version" + ieDriverVersion);
+            LOGGER.info("Downloading driver: " + resource.getURL());
+            IOUtils.copy(resource.getInputStream(), new FileOutputStream(downloadedFile));
+        }
+
+        LOGGER.info("IE driver file: " + downloadedFile.getAbsolutePath());
+
+        File driver = unzip(new FileInputStream(downloadedFile), driverDir);
+        driver.setExecutable(true);
+
+        System.setProperty("webdriver.ie.driver", driver.getAbsolutePath());
     }
 
     public void setChromeOptions(Map<String, Object> chromeOptions) {
