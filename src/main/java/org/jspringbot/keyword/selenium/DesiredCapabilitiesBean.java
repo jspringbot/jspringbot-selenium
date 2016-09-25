@@ -113,8 +113,11 @@ public class DesiredCapabilitiesBean implements InitializingBean {
         return driverDir;
     }
 
-    public void setIeDriver(Resource resource) throws IOException {
+    public void setIeDriver(Map<String, Resource> resourceMap) throws IOException {
         File driverDir = createDriverDir();
+
+        String arch = System.getProperty("sun.arch.data.model");
+        Resource resource = resourceMap.get(arch);
 
         File downloadedFile = new File(driverDir, resource.getFilename());
         if(!downloadedFile.isFile()) {
