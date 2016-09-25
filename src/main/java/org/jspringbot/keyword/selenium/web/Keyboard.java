@@ -24,9 +24,6 @@ public class Keyboard {
         }
     }
 
-    /**
-     * @param character
-     */
     public void type(char character) {
         switch (character) {
             case 'a': doType(VK_A); break;

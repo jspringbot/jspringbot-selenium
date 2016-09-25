@@ -13,12 +13,6 @@ public final class OsCheck {
     // cached result of OS detection
     protected static OSType detectedOS;
 
-    /**
-     * detect the operating system from the os.name System property and cache
-     * the result
-     *
-     * @returns - the operating system detected
-     */
     public static OSType getOperatingSystemType() {
         if (detectedOS == null) {
             String OS = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);
