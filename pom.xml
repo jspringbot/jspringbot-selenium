@@ -29,8 +29,6 @@
   </parent>
 
   <artifactId>jspringbot-selenium</artifactId>
-  <version>1.5-SNAPSHOT</version>
-  <packaging>jar</packaging>
   <name>jspringbot-selenium</name>
 
   <properties>
@@ -155,35 +153,25 @@
     <dependency>
       <groupId>org.jspringbot</groupId>
       <artifactId>jspringbot-pretty-logger</artifactId>
-      <version>1.4</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>${junit.version}</version>
-      <optional>true</optional>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-all</artifactId>
-      <version>1.8.0-rc2</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>${spring.version}</version>
       <scope>test</scope>
     </dependency>
-    <!--<dependency>-->
-    <!--<groupId>org.uiautomation</groupId>-->
-    <!--<artifactId>ios-common</artifactId>-->
-    <!--<version>0.6.2</version>-->
-    <!--</dependency>-->
     <dependency>
       <groupId>junit-addons</groupId>
       <artifactId>junit-addons</artifactId>
-      <version>1.4</version>
       <scope>test</scope>
     </dependency>
     <!-- 

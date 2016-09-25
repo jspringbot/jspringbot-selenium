@@ -26,8 +26,6 @@
 package org.jspringbot.keyword.selenium.flex.call;
 
 
-import org.junit.Assert;
-
 public class FlashCallTimer {
 
     private static final long INCREMENT = 250L;
@@ -53,7 +51,7 @@ public class FlashCallTimer {
         }
         while (System.currentTimeMillis() <= endTime);
 
-        Assert.fail(String.format("Timed out after %dms: %s", timeoutMillis, call.getErrorMessage()));
+        throw new IllegalStateException(String.format("Timed out after %dms: %s", timeoutMillis, call.getErrorMessage()));
     }
 
     public static void waitForNegatedCall(final long timeout, final FlashCall call) {

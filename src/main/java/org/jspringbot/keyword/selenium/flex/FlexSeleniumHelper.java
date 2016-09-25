@@ -4,7 +4,6 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.jspringbot.syntax.HighlightRobotLogger;
-import org.junit.Assert;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 
@@ -224,7 +223,7 @@ public class FlexSeleniumHelper implements FlexSelenium {
                 // Ignore this, we are just waiting for the app to load
             }
         }
-        Assert.fail("Application did not load");
+        throw new IllegalStateException("Application did not load");
     }
 
     private String callVerifyProperty(String functionName, String... args) {

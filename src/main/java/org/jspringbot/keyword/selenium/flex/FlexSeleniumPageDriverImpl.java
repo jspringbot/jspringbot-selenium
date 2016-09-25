@@ -25,8 +25,9 @@
  
 package org.jspringbot.keyword.selenium.flex;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
 import org.jspringbot.keyword.selenium.flex.call.*;
-import org.junit.Assert;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -59,21 +60,21 @@ public class FlexSeleniumPageDriverImpl implements FlexSeleniumPageDriver {
         ensureWidgetVisibility(widgetId, true);
         ensureWidgetEnabled(widgetId, true);
 
-        Assert.assertEquals(ACTION_SUCCESS, flexSelenium.setFocus(widgetId));
+        Validate.isTrue(StringUtils.equals(ACTION_SUCCESS, flexSelenium.setFocus(widgetId)));
     }
 
     @Override
     public void clickButton(final String widgetId) {
         ensureWidgetVisibility(widgetId, true);
         ensureWidgetEnabled(widgetId, true);
-        Assert.assertEquals(ACTION_SUCCESS, flexSelenium.click(widgetId));
+        Validate.isTrue(StringUtils.equals(ACTION_SUCCESS, flexSelenium.click(widgetId)));
     }
 
     @Override
     public void setCheckBoxState(final String widgetId, final boolean state) {
         ensureWidgetVisibility(widgetId, true);
         ensureWidgetEnabled(widgetId, true);
-        Assert.assertEquals(ACTION_SUCCESS, flexSelenium.selectCheckbox(widgetId, state));
+        Validate.isTrue(StringUtils.equals(ACTION_SUCCESS, flexSelenium.selectCheckbox(widgetId, state)));
     }
 
     @Override
@@ -163,7 +164,7 @@ public class FlexSeleniumPageDriverImpl implements FlexSeleniumPageDriver {
     public void selectTab(final String widgetId, final String tabTitle) {
         ensureWidgetVisibility(widgetId, true);
         ensureWidgetEnabled(widgetId, true);
-        Assert.assertEquals(ACTION_SUCCESS, flexSelenium.click(widgetId, tabTitle));
+        Validate.isTrue(StringUtils.equals(ACTION_SUCCESS, flexSelenium.click(widgetId, tabTitle)));
     }
 
     @Override
@@ -174,7 +175,7 @@ public class FlexSeleniumPageDriverImpl implements FlexSeleniumPageDriver {
         
         FlashCallTimer.waitForCall(timeout, new FlashComboContainsValueCall(flexSelenium, widgetId, label));
 
-        Assert.assertEquals("true", flexSelenium.selectComboByLabel(widgetId, label));
+        Validate.isTrue(StringUtils.equals("true", flexSelenium.selectComboByLabel(widgetId, label)));
 
         ensureComboSelectedItem(widgetId, label);
     }
@@ -220,7 +221,7 @@ public class FlexSeleniumPageDriverImpl implements FlexSeleniumPageDriver {
         FlashCallTimer.waitForCall(timeout, new FlashPropertySetCall(flexSelenium, widgetId, WIDGET_PROPERTY_DATA_PROVIDER));
 
         for (final String value : values) {
-            Assert.assertEquals(ACTION_SUCCESS, flexSelenium.select(widgetId, value));
+            Validate.isTrue(StringUtils.equals(ACTION_SUCCESS, flexSelenium.select(widgetId, value)));
         }
     }
 
@@ -362,7 +363,7 @@ public class FlexSeleniumPageDriverImpl implements FlexSeleniumPageDriver {
 
     @Override
     public String getDataGridRowValue(final String widgetId, final String field, final int row) {
-        Assert.assertTrue("Not enough rows in the table", getDataGridRowCount(widgetId) > row);
+        Validate.isTrue(getDataGridRowCount(widgetId) > row, "Not enough rows in the table");
 
         return flexSelenium.getFlexDataFieldValueForGridRow(widgetId, field, row);
     }
@@ -383,7 +384,7 @@ public class FlexSeleniumPageDriverImpl implements FlexSeleniumPageDriver {
     @Override
     public void closeAlert(final String response) {
         ensureAlertVisibility(true);
-        Assert.assertEquals(ACTION_SUCCESS, flexSelenium.doFlexAlertResponse(response));
+        Validate.isTrue(StringUtils.equals(ACTION_SUCCESS, flexSelenium.doFlexAlertResponse(response)));
         ensureAlertVisibility(false);
     }
     
@@ -397,7 +398,7 @@ public class FlexSeleniumPageDriverImpl implements FlexSeleniumPageDriver {
     @Override
     public void selectByFieldValue(final String widgetId, final String field, final String value) {
 //        ensureDataGridRowVisible(widgetId, field, value, true);
-        Assert.assertEquals(ACTION_SUCCESS, flexSelenium.selectMatchingOnField(widgetId, field, value));
+        Validate.isTrue(StringUtils.equals(ACTION_SUCCESS, flexSelenium.selectMatchingOnField(widgetId, field, value)));
     }
 
     @Override
@@ -428,7 +429,7 @@ public class FlexSeleniumPageDriverImpl implements FlexSeleniumPageDriver {
         
         final int numSelected = flexSelenium.getNumSelectedItems(widgetId);
 
-        Assert.assertEquals("Wrong number of items selected", expectedItems.length, numSelected);
+        Validate.isTrue(expectedItems.length == numSelected, "Wrong number of items selected");
 
         final List<String> expectedItemsList = Arrays.asList(expectedItems);
         final List<String> actualItemsList = new ArrayList<String>();
@@ -441,7 +442,7 @@ public class FlexSeleniumPageDriverImpl implements FlexSeleniumPageDriver {
         Collections.sort(expectedItemsList);
         Collections.sort(actualItemsList);
         
-        Assert.assertEquals(expectedItemsList, actualItemsList);
+        Validate.isTrue(expectedItemsList.equals(actualItemsList));
     }
 
     @Override
