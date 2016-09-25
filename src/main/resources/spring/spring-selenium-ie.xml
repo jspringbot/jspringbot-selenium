@@ -30,7 +30,7 @@
     <property name="ieDriver">
       <map>
         <entry key="32" value="${selenium.ie.driver.32bit.url.download:http://selenium-release.storage.googleapis.com/2.53/IEDriverServer_Win32_2.53.1.zip}"/>
-        <entry key="64" value="${selenium.ie.driver.64bit.url.download:http://selenium-release.storage.googleapis.com/2.53/IEDriverServer_Win32_2.53.1.zip}"/>
+        <entry key="64" value="${selenium.ie.driver.64bit.url.download:http://selenium-release.storage.googleapis.com/2.53/IEDriverServer_x64_2.53.1.zip}"/>
       </map>
     </property>
     <property name="baseDir" value="${selenium.base.dir:none}"/>
