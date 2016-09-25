@@ -45,6 +45,10 @@ public class DesiredCapabilitiesBean implements InitializingBean {
 
     private String ieDriverVersion;
 
+    private boolean archAutodetect = false;
+
+    private String archValue = "32";
+
 
     public DesiredCapabilitiesBean(DesiredCapabilities capabilities) {
         this.capabilities = capabilities;
@@ -69,6 +73,14 @@ public class DesiredCapabilitiesBean implements InitializingBean {
                 baseDir.mkdirs();
             }
         }
+    }
+
+    public void setArchAutodetect(boolean archAutodetect) {
+        this.archAutodetect = archAutodetect;
+    }
+
+    public void setArchValue(String archValue) {
+        this.archValue = archValue;
     }
 
     public void setChromeDrivers(Map<OsCheck.OSType, Resource> chromeDrivers) throws IOException {
@@ -116,7 +128,11 @@ public class DesiredCapabilitiesBean implements InitializingBean {
     public void setIeDriver(Map<String, Resource> resourceMap) throws IOException {
         File driverDir = createDriverDir();
 
-        String arch = System.getProperty("sun.arch.data.model");
+        String arch = archValue;
+        if(archAutodetect) {
+            arch = System.getProperty("sun.arch.data.model");
+        }
+
         Resource resource = resourceMap.get(arch);
 
         File downloadedFile = new File(driverDir, resource.getFilename());

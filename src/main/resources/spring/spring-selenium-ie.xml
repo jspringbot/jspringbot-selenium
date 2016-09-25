@@ -24,6 +24,8 @@
 
   <bean class="org.jspringbot.keyword.selenium.DesiredCapabilitiesBean">
     <constructor-arg ref="desiredCapabilities"/>
+    <property name="archAutodetect" value="${selenium.autodetect.arch:false}"/>
+    <property name="archValue" value="${selenium.arch.value:32}"/>
     <property name="ieDriverVersion" value="2.53.1"/>
     <property name="ieDriver">
       <map>
