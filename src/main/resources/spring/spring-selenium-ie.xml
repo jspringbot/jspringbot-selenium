@@ -39,7 +39,7 @@
     <property name="sslProxy" value="${selenium.ssl.proxy:none}"/>
   </bean>
 
-  <bean id="webdriver" class="org.openqa.selenium.ie.InternetExplorerDriver" destroy-method="stopClient">
+  <bean id="webdriver" class="org.openqa.selenium.ie.InternetExplorerDriver" destroy-method="close">
     <constructor-arg ref="desiredCapabilities"/>
   </bean>
 
