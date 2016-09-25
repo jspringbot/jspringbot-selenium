@@ -15,4 +15,5 @@ https://developer.chrome.com/devtools/docs/device-mode
 
 ### Internet Explorer Driver home
 
+https://github.com/SeleniumHQ/selenium/wiki/InternetExplorerDriver
 http://selenium-release.storage.googleapis.com/index.html
