@@ -3,3 +3,5 @@ Zooms out on a web page.
 *Example:*
 
 | `Zoom Out` | 5 |
+
+Not compatible with chrome
