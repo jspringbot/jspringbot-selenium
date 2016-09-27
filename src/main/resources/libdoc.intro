@@ -18,8 +18,18 @@ Configure the following to use jspringbot-selenium.
 For Firefox Support:
 | <import resource="classpath:spring/spring-selenium-firefox.xml"/>
 
+| JpsringBot Selenium Version | Firefox |
+| 1.4                         | 37      |
+| 1.5                         | 46.0.1  |
+
 For Chrome Support (@since 1.4):
 | <import resource="classpath:spring/spring-selenium-chrome.xml"/>
+
+| JpsringBot Selenium Version | Chrome Driver | Google Chrome |
+| 1.5                         | 2.24.417424   | 53.0.2785.116 |
+
+For IE Support (@since 1.5):
+| <import resource="classpath:spring/spring-selenium-ie.xml"/>
 
 For Selenium Hub Support:
 | <import resource="classpath:spring/spring-selenium-hub.xml"/>
