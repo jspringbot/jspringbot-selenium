@@ -19,7 +19,7 @@ For Firefox Support:
 | <import resource="classpath:spring/spring-selenium-firefox.xml"/>
 
 | JpsringBot Selenium Version | Firefox |
-| 1.4                         | 37      |
+| 1.4                         | 37.0.2  |
 | 1.5                         | 46.0.1  |
 
 For Chrome Support (@since 1.4):
