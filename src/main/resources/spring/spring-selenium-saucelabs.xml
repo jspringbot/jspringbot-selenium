@@ -19,27 +19,31 @@
     </property>
   </bean>
 
-  <bean id="desiredCapabilities" class="org.openqa.selenium.remote.DesiredCapabilities"
-        factory-method="internetExplorer"/>
+  <bean id="desiredCapabilities" class="org.openqa.selenium.remote.DesiredCapabilities"/>
+
+  <bean id="sauceOnDemandAuthentication" class="com.saucelabs.common.SauceOnDemandAuthentication">
+    <property name="username" value="${selenium.saucelabs.username}"/>
+    <property name="accessKey" value="${selenium.saucelabs.accesskey}"/>
+  </bean>
 
   <bean class="org.jspringbot.keyword.selenium.DesiredCapabilitiesBean">
     <constructor-arg ref="desiredCapabilities"/>
-    <property name="archAutodetect" value="${selenium.autodetect.arch:false}"/>
-    <property name="archValue" value="${selenium.arch.value:32}"/>
-    <property name="ieDriverVersion" value="2.53.1"/>
-    <property name="ieDriver">
-      <map>
-        <entry key="32" value="${selenium.ie.driver.32bit.url.download:http://selenium-release.storage.googleapis.com/2.53/IEDriverServer_Win32_2.53.1.zip}"/>
-        <entry key="64" value="${selenium.ie.driver.64bit.url.download:http://selenium-release.storage.googleapis.com/2.53/IEDriverServer_x64_2.53.1.zip}"/>
-      </map>
-    </property>
+    <property name="browserName" value="${selenium.browser}"/>
+    <property name="platform" value="${selenium.os}"/>
+    <property name="version" value="${selenium.browser.version:none}"/>
+    <property name="deviceName" value="${selenium.device.name:none}"/>
+    <property name="deviceOrientation" value="${selenium.device.orientation:none}"/>
+    <property name="name" value="${selenium.saucelabs.name:jspringbot}"/>
+    <property name="build" value="${selenium.saucelabs.build:none}"/>
+    <property name="tunnelId" value="${selenium.saucelabs.tunnel.id:none}"/>
     <property name="baseDir" value="${selenium.base.dir:none}"/>
     <property name="proxy" value="${selenium.proxy:none}"/>
     <property name="httpProxy" value="${selenium.http.proxy:none}"/>
     <property name="sslProxy" value="${selenium.ssl.proxy:none}"/>
   </bean>
 
-  <bean id="webdriver" class="org.openqa.selenium.ie.InternetExplorerDriver" destroy-method="quit">
+  <bean id="webdriver" class="org.openqa.selenium.remote.RemoteWebDriver" destroy-method="quit">
+    <constructor-arg type="java.net.URL" value="${selenium.saucelabs.url}"/>
     <constructor-arg ref="desiredCapabilities"/>
   </bean>
 
@@ -61,6 +65,12 @@
   <bean class="org.jspringbot.keyword.selenium.WebDriverInitializerBean">
     <constructor-arg ref="helper"/>
     <property name="maximize" value="${selenium.browser.maximize:false}"/>
+  </bean>
+
+  <bean class="org.jspringbot.lifecycle.LifeCycleHandlerRegistryBean">
+    <constructor-arg>
+      <bean class="org.jspringbot.keyword.selenium.SauceLabsLifeCycleHandler"/>
+    </constructor-arg>
   </bean>
 
   <!-- Scan components -->

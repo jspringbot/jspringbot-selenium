@@ -1,5 +1,6 @@
 package org.jspringbot.keyword.selenium;
 
+import com.saucelabs.common.Utils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -227,19 +228,56 @@ public class DesiredCapabilitiesBean implements InitializingBean {
 
     public void setBrowserName(String browserName) {
         if(!StringUtils.equalsIgnoreCase(browserName, "none")) {
-            capabilities.setBrowserName(browserName);
+            capabilities.setCapability(CapabilityType.BROWSER_NAME, browserName);
         }
     }
 
     public void setVersion(String version){
         if(!StringUtils.equalsIgnoreCase(version, "none")) {
-            capabilities.setVersion(version);
+            capabilities.setCapability(CapabilityType.VERSION, version);
         }
     }
 
     public void setPlatform(String platform){
         if(!StringUtils.equalsIgnoreCase(platform, "none")) {
-            capabilities.setPlatform(Platform.valueOf(platform));
+            capabilities.setCapability(CapabilityType.PLATFORM, platform);
+        }
+    }
+
+    public void setDeviceName(String deviceName) {
+        if(!StringUtils.equalsIgnoreCase(deviceName, "none")) {
+            capabilities.setCapability("deviceName", deviceName);
+        }
+    }
+
+    public void setDeviceOrientation(String deviceOrientation) {
+        if(!StringUtils.equalsIgnoreCase(deviceOrientation, "none")) {
+            capabilities.setCapability("device-orientation", deviceOrientation);
+        }
+    }
+
+    public void setName(String name) {
+        if(!StringUtils.equalsIgnoreCase(name, "none")) {
+            capabilities.setCapability("name", name);
+        }
+    }
+
+    public void setBuild(String build) {
+        if(!StringUtils.equalsIgnoreCase(build, "none")) {
+            capabilities.setCapability("build", build);
+        } else {
+            Map<String, Object> map = new HashMap<String, Object>();
+            Utils.addBuildNumberToUpdate(map);
+
+            if(map.containsKey("build")) {
+                capabilities.setCapability("build", map.get("build"));
+            }
+        }
+    }
+
+    public void setTunnelId(String tunnelId) {
+        if(!StringUtils.equalsIgnoreCase(tunnelId, "none")) {
+            capabilities.setCapability("tunnel-identifier", tunnelId);
         }
     }
 
