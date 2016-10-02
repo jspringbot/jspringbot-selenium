@@ -18,7 +18,9 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
@@ -135,22 +137,10 @@
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-java</artifactId>
-      <!--exclusions>
-        <exclusion>
-          <groupId>com.google.code.gson</groupId>
-          <artifactId>gson</artifactId>
-        </exclusion>
-      </exclusions-->
     </dependency>
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-firefox-driver</artifactId>
-      <!--exclusions>
-        <exclusion>
-          <groupId>com.google.code.gson</groupId>
-          <artifactId>gson</artifactId>
-        </exclusion>
-      </exclusions-->
     </dependency>
     <dependency>
       <groupId>org.jspringbot</groupId>
@@ -178,16 +168,13 @@
     </dependency>
     <dependency>
       <groupId>com.saucelabs</groupId>
-      <artifactId>sauce_junit</artifactId>
+      <artifactId>sauce_java_common</artifactId>
       <version>2.1.20</version>
     </dependency>
-
-    <!-- 
-	<dependency>
-      <groupId>org.uiautomation</groupId>
-      <artifactId>ios-server</artifactId>
-      <version>0.6.5</version>
+    <dependency>
+      <groupId>com.saucelabs</groupId>
+      <artifactId>saucerest</artifactId>
+      <version>1.0.22</version>
     </dependency>
-     -->
   </dependencies>
 </project>
