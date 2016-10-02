@@ -147,6 +147,18 @@
       <artifactId>jspringbot-pretty-logger</artifactId>
     </dependency>
     <dependency>
+      <groupId>com.saucelabs</groupId>
+      <artifactId>sauce_java_common</artifactId>
+      <version>2.1.20</version>
+    </dependency>
+    <dependency>
+      <groupId>com.saucelabs</groupId>
+      <artifactId>saucerest</artifactId>
+      <version>1.0.22</version>
+    </dependency>
+
+
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>
@@ -165,16 +177,6 @@
       <groupId>junit-addons</groupId>
       <artifactId>junit-addons</artifactId>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.saucelabs</groupId>
-      <artifactId>sauce_java_common</artifactId>
-      <version>2.1.20</version>
-    </dependency>
-    <dependency>
-      <groupId>com.saucelabs</groupId>
-      <artifactId>saucerest</artifactId>
-      <version>1.0.22</version>
     </dependency>
   </dependencies>
 </project>
