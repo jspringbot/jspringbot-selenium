@@ -31,7 +31,7 @@ For Chrome Support (@since 1.4):
 For IE Support (@since 1.5):
 | <import resource="classpath:spring/spring-selenium-ie.xml"/>
 
-For Saucelabs Support (@since 1.5.2b):
+For Saucelabs Support (@since 1.5.3):
 | <import resource="classpath:spring/spring-selenium-saucelabs.xml"/>
 
 For Selenium Hub Support:
@@ -73,11 +73,11 @@ For Site Catalyst Support:
 | {{selenium.chrome.performance.log.level}} | None | @Default {{None}}, add performance browser logging. |
 | {{selenium.chrome.browser.log.level}} | None | @Default {{None}}, add browser logging. |
 | {{selenium.chrome.pref.log.dir}} | /tmp | This will be the destination location for the generated preference browser log files. |
-| *Saucelabs Properties* (@Since 1.5.2b) | | |
+| *Saucelabs Properties* (@Since 1.5.3) | | |
 | {{selenium.saucelabs.username}} | none | @Required, Saucelabs user name.  |
 | {{selenium.saucelabs.accesskey}} | none | @Required, Saucelabs access key. |
-| {{selenium.saucelabs.name}} | jspringbot | @Default {{jspingbot}}, The Saucelabs automated test name. |
-| {{selenium.browser}} | none | @Required, the browser to use.|
+| {{selenium.saucelabs.name}} | jspringbot | @Default jspingbot, The Saucelabs automated test name. |
+| {{selenium.browser}} | none | @Required, the browser to use. |
 | {{selenium.os}} | none | @Required, the os to use. |
 | {{selenium.browser.version}} | none | @Default {{none}}, for none Saucelabs will select the version for you, the browser version to use. |
 | {{selenium.device.name}} | none | the device to use |

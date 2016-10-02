@@ -88,6 +88,8 @@ public class SauceLabsLifeCycleHandler extends LifeCycleAdapter implements Initi
             updates.put("passed", true);
             Utils.addBuildNumberToUpdate(updates);
             this.sauceREST.updateJobInfo(sessionId, updates);
+            String authLink = this.sauceREST.getPublicJobLink(sessionId);
+            System.out.println("Job link: " + authLink);
         }
     }
 }
