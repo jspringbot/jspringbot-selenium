@@ -1,7 +1,5 @@
 jspringbot-selenium [![Build Status](https://travis-ci.org/jspringbot/jspringbot-selenium.svg?branch=master)](https://travis-ci.org/jspringbot/jspringbot-selenium)
 =======
-
-https://travis-ci.org/jspringbot/jspringbot-selenium.svg?branch=master
 JSpringBot Selenium Library
 
 `mvn clean install`
