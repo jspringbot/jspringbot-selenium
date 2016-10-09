@@ -20,6 +20,8 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.io.Resource;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -38,7 +40,7 @@ public class DesiredCapabilitiesBean implements InitializingBean {
 
     private Map<String, Object> chromeOptions = new HashMap<String, Object>();
 
-    private Map<String, String> mobileEmulation;
+    private Map<String, Object> mobileEmulation;
 
     private LoggingPreferences logPrefs;
 
@@ -155,10 +157,53 @@ public class DesiredCapabilitiesBean implements InitializingBean {
         this.chromeOptions = chromeOptions;
     }
 
+    public void setChromeDeviceMetrics(String deviceMetrics) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        if(StringUtils.isNotBlank(deviceMetrics) && !StringUtils.equalsIgnoreCase(deviceMetrics, "none")) {
+            if(mobileEmulation == null) {
+                mobileEmulation = new HashMap<String, Object>();
+            }
+
+            String[] metrics = StringUtils.split(deviceMetrics, "x");
+
+            if(metrics.length < 2) {
+                throw new IllegalArgumentException("Expected <width>x<height>x<pixel_ratio> but was " + deviceMetrics);
+            }
+
+            final String[] NAMES = {"width", "height", "pixelRatio"};
+            final Class[] CLASSES = {Integer.class, Integer.class, Double.class};
+            Map<String, Object> deviceMetricsMap = new HashMap<String, Object>();
+
+            for(int i = 0 ; i < metrics.length && i < NAMES.length; i++) {
+                deviceMetricsMap.put(NAMES[i], classValueOf(CLASSES[i], metrics[i]));
+            }
+
+            mobileEmulation.put("deviceMetrics", deviceMetricsMap);
+        }
+    }
+
+    private Object classValueOf(Class clazz, String item) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Method method = clazz.getDeclaredMethod("valueOf", String.class);
+
+        return method.invoke(clazz, item);
+    }
+
     public void setChromeDeviceEmulation(String deviceEmulation) {
         if(StringUtils.isNotBlank(deviceEmulation) && !StringUtils.equalsIgnoreCase(deviceEmulation, "none")) {
-            this.mobileEmulation = new HashMap<String, String>();
+            if(mobileEmulation == null) {
+                mobileEmulation = new HashMap<String, Object>();
+            }
+
             mobileEmulation.put("deviceName", deviceEmulation);
+        }
+    }
+
+    public void setChromeDeviceUserAgent(String userAgent) {
+        if(StringUtils.isNotBlank(userAgent) && !StringUtils.equalsIgnoreCase(userAgent, "none")) {
+            if(mobileEmulation == null) {
+                mobileEmulation = new HashMap<String, Object>();
+            }
+
+            mobileEmulation.put("userAgent", userAgent);
         }
     }
 
@@ -244,6 +289,12 @@ public class DesiredCapabilitiesBean implements InitializingBean {
         }
     }
 
+    public void setPlatformVersion(String platformVersion){
+        if(!StringUtils.equalsIgnoreCase(platformVersion, "none")) {
+            capabilities.setCapability("platformVersion", platformVersion);
+        }
+    }
+
     public void setDeviceName(String deviceName) {
         if(!StringUtils.equalsIgnoreCase(deviceName, "none")) {
             capabilities.setCapability("deviceName", deviceName);
@@ -252,7 +303,23 @@ public class DesiredCapabilitiesBean implements InitializingBean {
 
     public void setDeviceOrientation(String deviceOrientation) {
         if(!StringUtils.equalsIgnoreCase(deviceOrientation, "none")) {
-            capabilities.setCapability("device-orientation", deviceOrientation);
+            if(StringUtils.equals(String.valueOf(capabilities.getCapability("deviceType")), "phone")) {
+                capabilities.setCapability("deviceOrientation", deviceOrientation);
+            } else {
+                capabilities.setCapability("device-orientation", deviceOrientation);
+            }
+        }
+    }
+
+    public void setDeviceType(String deviceType) {
+        if(!StringUtils.equalsIgnoreCase(deviceType, "none")) {
+            capabilities.setCapability("deviceType", deviceType);
+        }
+    }
+
+    public void setAppiumVersion(String appiumVersion) {
+        if(!StringUtils.equalsIgnoreCase(appiumVersion, "none")) {
+            capabilities.setCapability("appiumVersion", appiumVersion);
         }
     }
 

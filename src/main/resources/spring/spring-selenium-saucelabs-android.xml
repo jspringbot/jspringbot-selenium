@@ -4,9 +4,10 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans.xsd">
-  <import resource="spring-selenium-saucelabs-common.xml"/>
 
-  <bean id="webdriver" class="org.openqa.selenium.remote.RemoteWebDriver" destroy-method="quit">
+  <import resource="spring-selenium-saucelabs-phone.xml"/>
+
+  <bean id="webdriver" class="io.appium.java_client.android.AndroidDriver" destroy-method="quit">
     <constructor-arg type="java.net.URL" value="${selenium.saucelabs.url}"/>
     <constructor-arg ref="desiredCapabilities"/>
   </bean>

@@ -19,38 +19,34 @@
     </property>
   </bean>
 
-  <bean id="desiredCapabilities" class="org.openqa.selenium.remote.DesiredCapabilities"
-        factory-method="chrome"/>
+  <bean id="desiredCapabilities" class="org.openqa.selenium.remote.DesiredCapabilities"/>
 
-  <bean class="org.jspringbot.keyword.selenium.DesiredCapabilitiesBean">
+  <bean id="sauceOnDemandAuthentication" class="com.saucelabs.common.SauceOnDemandAuthentication">
+    <property name="username" value="${selenium.saucelabs.username}"/>
+    <property name="accessKey" value="${selenium.saucelabs.accesskey}"/>
+  </bean>
+
+  <bean id="desiredCapabilitiesBean" class="org.jspringbot.keyword.selenium.DesiredCapabilitiesBean">
     <constructor-arg ref="desiredCapabilities"/>
-    <property name="chromeDriverVersion" value="${selenium.chrome.driver.version:2.24}"/>
+    <property name="deviceType" value="${selenium.device.type:none}"/>
+    <property name="browserName" value="${selenium.browser}"/>
+    <property name="platform" value="${selenium.platform}"/>
+    <property name="platformVersion" value="${selenium.platform.version:none}"/>
+    <property name="version" value="${selenium.browser.version:none}"/>
+    <property name="deviceName" value="${selenium.device.name:none}"/>
+    <property name="deviceOrientation" value="${selenium.device.orientation:none}"/>
+    <property name="name" value="${selenium.saucelabs.name:jspringbot}"/>
+    <property name="build" value="${selenium.saucelabs.build:none}"/>
+    <property name="tunnelId" value="${selenium.saucelabs.tunnel.id:none}"/>
     <property name="baseDir" value="${selenium.base.dir:none}"/>
-    <property name="chromeDrivers">
-      <map>
-        <entry key="Windows" value="${selenium.chrome.driver.url.download:http://chromedriver.storage.googleapis.com/}${selenium.chrome.driver.version:2.24}/chromedriver_win32.zip"/>
-        <entry key="MacOS" value="${selenium.chrome.driver.url.download:http://chromedriver.storage.googleapis.com/}${selenium.chrome.driver.version:2.24}/chromedriver_mac64.zip"/>
-        <entry key="Linux" value="${selenium.chrome.driver.url.download:http://chromedriver.storage.googleapis.com/}${selenium.chrome.driver.version:2.24}/chromedriver_linux#{systemProperties['sun.arch.data.model']}.zip"/>
-      </map>
-    </property>
-    <property name="chromeDeviceEmulation" value="${selenium.chrome.mobile.device:none}"/>
-    <property name="chromeDeviceMetrics" value="${selenium.chrome.mobile.device.metrics:none}"/>
-    <property name="chromeDeviceUserAgent" value="${selenium.chrome.mobile.device.user.agent:none}"/>
-    <property name="chromeBrowserLog" value="${selenium.chrome.browser.log.level:none}"/>
-    <property name="chromePerformanceLog" value="${selenium.chrome.performance.log.level:none}"/>
-    <property name="chromeLogFile" value="${selenium.chrome.webdriver.logfile:none}"/>
     <property name="proxy" value="${selenium.proxy:none}"/>
     <property name="httpProxy" value="${selenium.http.proxy:none}"/>
     <property name="sslProxy" value="${selenium.ssl.proxy:none}"/>
-  </bean>
+    <property name="appiumVersion" value="${selenium.appium.version:none}"/>
 
-  <bean id="webdriver" class="org.openqa.selenium.chrome.ChromeDriver" destroy-method="stopClient">
-    <constructor-arg ref="desiredCapabilities"/>
-  </bean>
-
-  <bean class="org.jspringbot.keyword.selenium.ChromeDriverDisposableBean">
-    <constructor-arg ref="webdriver"/>
-    <property name="chromePrefLogDir" value="${selenium.chrome.pref.log.dir:none}"/>
+    <property name="chromeDeviceEmulation" value="${selenium.chrome.mobile.device:none}"/>
+    <property name="chromeDeviceMetrics" value="${selenium.chrome.mobile.device.metrics:none}"/>
+    <property name="chromeDeviceUserAgent" value="${selenium.chrome.mobile.device.user.agent:none}"/>
   </bean>
 
   <bean class="org.jspringbot.keyword.selenium.WebDriverWaitBean">
@@ -71,6 +67,12 @@
   <bean class="org.jspringbot.keyword.selenium.WebDriverInitializerBean">
     <constructor-arg ref="helper"/>
     <property name="maximize" value="${selenium.browser.maximize:false}"/>
+  </bean>
+
+  <bean class="org.jspringbot.lifecycle.LifeCycleHandlerRegistryBean">
+    <constructor-arg>
+      <bean class="org.jspringbot.keyword.selenium.SauceLabsLifeCycleHandler"/>
+    </constructor-arg>
   </bean>
 
   <!-- Scan components -->

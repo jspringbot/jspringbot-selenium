@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <import resource="spring-selenium-saucelabs-common.xml"/>
+
+  <bean id="desiredCapabilitiesBean" class="org.jspringbot.keyword.selenium.DesiredCapabilitiesBean">
+    <constructor-arg ref="desiredCapabilities"/>
+    <property name="deviceType" value="phone"/>
+    <property name="browserName" value="${selenium.browser}"/>
+    <property name="platform" value="${selenium.platform}"/>
+    <property name="platformVersion" value="${selenium.platform.version:none}"/>
+    <property name="version" value="${selenium.browser.version:none}"/>
+    <property name="deviceName" value="${selenium.device.name:none}"/>
+    <property name="deviceOrientation" value="${selenium.device.orientation:none}"/>
+    <property name="name" value="${selenium.saucelabs.name:jspringbot}"/>
+    <property name="build" value="${selenium.saucelabs.build:none}"/>
+    <property name="tunnelId" value="${selenium.saucelabs.tunnel.id:none}"/>
+    <property name="baseDir" value="${selenium.base.dir:none}"/>
+    <property name="proxy" value="${selenium.proxy:none}"/>
+    <property name="httpProxy" value="${selenium.http.proxy:none}"/>
+    <property name="sslProxy" value="${selenium.ssl.proxy:none}"/>
+    <property name="appiumVersion" value="${selenium.appium.version:none}"/>
+
+    <property name="chromeDeviceEmulation" value="${selenium.chrome.mobile.device:none}"/>
+    <property name="chromeDeviceMetrics" value="${selenium.chrome.mobile.device.metrics:none}"/>
+    <property name="chromeDeviceUserAgent" value="${selenium.chrome.mobile.device.user.agent:none}"/>
+  </bean>
+</beans>

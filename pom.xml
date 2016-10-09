@@ -148,13 +148,13 @@
     </dependency>
     <dependency>
       <groupId>com.saucelabs</groupId>
-      <artifactId>sauce_java_common</artifactId>
+      <artifactId>sauce_testng</artifactId>
       <version>2.1.20</version>
     </dependency>
     <dependency>
-      <groupId>com.saucelabs</groupId>
-      <artifactId>saucerest</artifactId>
-      <version>1.0.22</version>
+      <groupId>io.appium</groupId>
+      <artifactId>java-client</artifactId>
+      <version>4.1.2</version>
     </dependency>
 
 
