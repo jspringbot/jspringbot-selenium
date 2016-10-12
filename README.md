@@ -29,3 +29,4 @@ http://selenium-release.storage.googleapis.com/index.html
 
 https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/
 https://wiki.saucelabs.com/display/DOCS/Test+Configuration+Options
+https://wiki.saucelabs.com/pages/viewpage.action?pageId=48365781
