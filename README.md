@@ -6,6 +6,10 @@ JSpringBot Selenium Library
 
 `mvn clean install -DskipTests`
 
+### Devices
+
+https://design.google.com/devices/
+
 ### Chrome Driver Home
 
 https://sites.google.com/a/chromium.org/chromedriver/home
