@@ -44,6 +44,7 @@
     <property name="sslProxy" value="${selenium.ssl.proxy:none}"/>
     <property name="appiumVersion" value="${selenium.appium.version:none}"/>
 
+    <property name="maxDuration" value="${selenium.max.duration:none}"/>
     <property name="chromeDeviceEmulation" value="${selenium.chrome.mobile.device:none}"/>
     <property name="chromeDeviceMetrics" value="${selenium.chrome.mobile.device.metrics:none}"/>
     <property name="chromeDeviceUserAgent" value="${selenium.chrome.mobile.device.user.agent:none}"/>

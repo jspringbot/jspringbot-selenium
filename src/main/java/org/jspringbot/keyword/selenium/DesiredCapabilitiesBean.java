@@ -7,7 +7,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.openqa.selenium.Platform;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -345,6 +344,12 @@ public class DesiredCapabilitiesBean implements InitializingBean {
     public void setTunnelId(String tunnelId) {
         if(!StringUtils.equalsIgnoreCase(tunnelId, "none")) {
             capabilities.setCapability("tunnel-identifier", tunnelId);
+        }
+    }
+
+    public void setMaxDuration(String maxDuration) {
+        if(!StringUtils.equalsIgnoreCase(maxDuration, "none")) {
+            capabilities.setCapability("maxDuration", Integer.parseInt(maxDuration));
         }
     }
 
