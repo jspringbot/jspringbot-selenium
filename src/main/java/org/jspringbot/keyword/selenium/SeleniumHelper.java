@@ -35,6 +35,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceEditor;
+import ru.yandex.qatools.ashot.AShot;
+import ru.yandex.qatools.ashot.Screenshot;
+import ru.yandex.qatools.ashot.screentaker.ViewportPastingStrategy;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -428,18 +431,16 @@ public class SeleniumHelper {
     }
 
     public File captureScreenShot(String options) throws IOException {
-        byte[] bytes = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+        Screenshot screenshot = new AShot().shootingStrategy(new ViewportPastingStrategy(1000)).takeScreenshot(driver);
 
         File file = newScreenCaptureFile();
 
         if(options == null) {
             FileOutputStream out = null;
             try {
+                ImageIO.write(screenshot.getImage(), "PNG", file);
 
                 LOG.html("Screen captured (%d): <br /> <img src='%s'/>", screenCaptureCtr, file.getName());
-
-                out = new FileOutputStream(file);
-                IOUtils.write(bytes, out);
 
                 return file;
             } finally {
@@ -448,8 +449,7 @@ public class SeleniumHelper {
         } else {
             LOG.html("Screen captured (%d): <br /> <img src='%s'/>", screenCaptureCtr, file.getName());
 
-            BufferedImage fullImg = ImageIO.read(new ByteArrayInputStream(bytes));
-            ImageIO.write(processOption(fullImg, options), "png", file);
+            ImageIO.write(processOption(screenshot.getImage(), options), "png", file);
         }
 
         return file;
