@@ -116,6 +116,18 @@ public class SeleniumHelperTest {
     }
 
     @Test
+    public void jsSample() throws Exception {
+        doKeyword(navigateTo, "http://jspringbot.org/search.html");
+        doKeyword(executeJavascript, "alert('hi');");
+
+        Thread.sleep(3000);
+
+        helper.confirmAction();
+
+        Thread.sleep(13000);
+    }
+
+    @Test
     public void keyCord() throws Exception {
         doKeyword(navigateTo, "http://jspringbot.org/search.html");
 
