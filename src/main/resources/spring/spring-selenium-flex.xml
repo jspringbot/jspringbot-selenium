@@ -10,6 +10,8 @@
 
   <description>Robot Flex Selenium Keywords</description>
 
+  <import resource="spring-selenium-common.xml"/>
+
   <bean id="flexSeleniumWrapper" class="org.jspringbot.keyword.selenium.flex.FlexSeleniumHelperWrapper">
     <constructor-arg ref="webdriver"/>
   </bean>

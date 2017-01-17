@@ -10,6 +10,8 @@
 
   <description>Robot Selenium Keywords</description>
 
+  <import resource="spring-selenium-common.xml"/>
+
   <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
     <property name="ignoreUnresolvablePlaceholders" value="true"/>
     <property name="locations">
