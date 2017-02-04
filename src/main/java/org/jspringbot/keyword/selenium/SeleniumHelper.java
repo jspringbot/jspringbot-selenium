@@ -35,13 +35,11 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceEditor;
-import ru.yandex.qatools.ashot.AShot;
-import ru.yandex.qatools.ashot.Screenshot;
-import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -374,20 +372,31 @@ public class SeleniumHelper {
 
         WebElement el = finder.find(locator);
 
-        Screenshot screenshot = new AShot()
-                .shootingStrategy(ShootingStrategies.viewportPasting(100))
-                .takeScreenshot(driver, el);
-
+        byte[] bytes = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
         File file = newScreenCaptureFile();
 
         LOG.keywordAppender().appendArgument("File", file.getAbsolutePath());
 
         LOG.html("Screen captured (%d): <br /> <img src='%s'/>", screenCaptureCtr, file.getName());
 
+        BufferedImage fullImg = ImageIO.read(new ByteArrayInputStream(bytes));
+        //Get the location of element on the page
+        Point point = el.getLocation();
+        //Get width and height of the element
+        int eleWidth = el.getSize().getWidth();
+        int eleHeight = el.getSize().getHeight();
+
+        LOG.keywordAppender()
+                .appendArgument("Width", eleWidth)
+                .appendArgument("Height", eleHeight)
+                .appendArgument("X", point.getX())
+                .appendArgument("Y", point.getY());
+
         //Crop the entire page screenshot to get only element screenshot
-        BufferedImage eleScreenshot= screenshot.getImage();
+        BufferedImage eleScreenshot= fullImg.getSubimage(point.getX(), point.getY(), eleWidth, eleHeight);
+
         if(options != null) {
-            eleScreenshot = processOption(screenshot.getImage(), options);
+            eleScreenshot = processOption(eleScreenshot, options);
         }
 
         ImageIO.write(eleScreenshot, "png", file);
@@ -419,18 +428,18 @@ public class SeleniumHelper {
     }
 
     public File captureScreenShot(String options) throws IOException {
-        Screenshot screenshot = new AShot()
-                .shootingStrategy(ShootingStrategies.viewportPasting(100))
-                .takeScreenshot(driver);
+        byte[] bytes = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
 
         File file = newScreenCaptureFile();
 
         if(options == null) {
             FileOutputStream out = null;
             try {
-                ImageIO.write(screenshot.getImage(), "PNG", file);
 
                 LOG.html("Screen captured (%d): <br /> <img src='%s'/>", screenCaptureCtr, file.getName());
+
+                out = new FileOutputStream(file);
+                IOUtils.write(bytes, out);
 
                 return file;
             } finally {
@@ -439,7 +448,8 @@ public class SeleniumHelper {
         } else {
             LOG.html("Screen captured (%d): <br /> <img src='%s'/>", screenCaptureCtr, file.getName());
 
-            ImageIO.write(processOption(screenshot.getImage(), options), "png", file);
+            BufferedImage fullImg = ImageIO.read(new ByteArrayInputStream(bytes));
+            ImageIO.write(processOption(fullImg, options), "png", file);
         }
 
         return file;
