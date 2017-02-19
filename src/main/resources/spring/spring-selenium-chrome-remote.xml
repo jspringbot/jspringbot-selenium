@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:ctx="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context.xsd">
+
+  <description>Robot Selenium Keywords</description>
+
+  <import resource="spring-selenium-common.xml"/>
+
+  <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="ignoreUnresolvablePlaceholders" value="true"/>
+    <property name="locations">
+      <list>
+        <value>classpath:jspringbot.properties</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="desiredCapabilities" class="org.openqa.selenium.remote.DesiredCapabilities"
+        factory-method="chrome"/>
+
+  <bean id="webdriver" class="org.openqa.selenium.remote.RemoteWebDriver" destroy-method="close">
+    <constructor-arg value="http://localhost:9515"/>
+    <constructor-arg ref="desiredCapabilities"/>
+  </bean>
+
+  <bean class="org.jspringbot.keyword.selenium.WebDriverWaitBean">
+    <constructor-arg ref="webdriver"/>
+    <property name="implicitWaitInSeconds" value="${selenium.implicit.wait:30}"/>
+    <property name="pageLoadWaitInSeconds" value="${selenium.page.wait:30}"/>
+    <property name="scriptWaitInSeconds" value="${selenium.script.wait:30}"/>
+    <property name="downloadTimeoutInSeconds" value="${selenium.download.timeout:10}"/>
+  </bean>
+
+  <bean id="helper" class="org.jspringbot.keyword.selenium.SeleniumHelper">
+    <constructor-arg ref="webdriver"/>
+    <property name="jqueryLink" value="${selenium.jquery.link:https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js}"/>
+    <property name="implicitWaitInSeconds" value="${selenium.implicit.wait:30}"/>
+    <property name="screenCaptureDir" value="${selenium.screenshot.folder}"/>
+  </bean>
+
+  <bean class="org.jspringbot.keyword.selenium.WebDriverInitializerBean">
+    <constructor-arg ref="helper"/>
+    <property name="maximize" value="${selenium.browser.maximize:false}"/>
+  </bean>
+
+  <!-- Scan components -->
+  <ctx:component-scan base-package="org.jspringbot.keyword.selenium.web"/>
+  <ctx:annotation-config/>
+</beans>
