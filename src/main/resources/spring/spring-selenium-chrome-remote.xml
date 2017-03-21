@@ -24,6 +24,12 @@
   <bean id="desiredCapabilities" class="org.openqa.selenium.remote.DesiredCapabilities"
         factory-method="chrome"/>
 
+  <bean name="browserMobProxy" class="org.jspringbot.keyword.selenium.BrowserMobProxyBean">
+    <constructor-arg ref="desiredCapabilities"/>
+    <property name="enable" value="${selenium.browser.mob.proxy.enabled:false}"/>
+    <property name="harDir" value="${selenium.browser.mob.proxy.har.save.dir:none}"/>
+  </bean>
+
   <bean id="webdriver" class="org.openqa.selenium.remote.RemoteWebDriver" destroy-method="close">
     <constructor-arg value="http://localhost:9515"/>
     <constructor-arg ref="desiredCapabilities"/>

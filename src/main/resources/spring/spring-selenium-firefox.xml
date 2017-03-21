@@ -46,6 +46,12 @@
 
   <bean id="desiredCapabilities" class="org.openqa.selenium.remote.DesiredCapabilities"/>
 
+  <bean name="browserMobProxy" class="org.jspringbot.keyword.selenium.BrowserMobProxyBean">
+    <constructor-arg ref="desiredCapabilities"/>
+    <property name="enable" value="${selenium.browser.mob.proxy.enabled:false}"/>
+    <property name="harDir" value="${selenium.browser.mob.proxy.har.save.dir:none}"/>
+  </bean>
+
   <bean class="org.jspringbot.keyword.selenium.DesiredCapabilitiesBean">
     <constructor-arg ref="desiredCapabilities"/>
     <property name="firefoxProfile" ref="profile"/>

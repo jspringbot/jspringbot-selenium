@@ -1,0 +1,18 @@
+Returns the HAR Transferred Size
+
+
+*Example:*
+| New HAR                | myHARFile                |
+| Navigate To            |                          |
+| Get HAR                |                          |
+| Save HAR               |                          |
+| ${harTransferredSize}= | Get HAR Transferred Size |
+
+For integrated HAR support, the following properties should be enabled/defined
+*jspringbot.properties*
+selenium.browser.mob.proxy.enabled=true
+selenium.browser.mob.proxy.har.save.dir=${project.build.directory}/robotframework-reports/har
+
+!!! Note:
+* Should not be used with "Proxy Properties" and "Saucelabs Properties" since HAR support is already using Selenium Proxy
+

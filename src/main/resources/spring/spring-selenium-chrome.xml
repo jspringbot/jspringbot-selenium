@@ -46,6 +46,12 @@
     <property name="sslProxy" value="${selenium.ssl.proxy:none}"/>
   </bean>
 
+  <bean name="browserMobProxy" class="org.jspringbot.keyword.selenium.BrowserMobProxyBean">
+    <constructor-arg ref="desiredCapabilities"/>
+    <property name="enable" value="${selenium.browser.mob.proxy.enabled:false}"/>
+    <property name="harDir" value="${selenium.browser.mob.proxy.har.save.dir:none}"/>
+  </bean>
+
   <bean id="webdriver" class="org.openqa.selenium.chrome.ChromeDriver" destroy-method="stopClient">
     <constructor-arg ref="desiredCapabilities"/>
   </bean>

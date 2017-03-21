@@ -41,6 +41,21 @@ public class SeleniumHelperTest {
     private NavigateTo navigateTo;
 
     @Autowired
+    private NewHAR newHAR;
+
+    @Autowired
+    private GetHAR getHAR;
+
+    @Autowired
+    private SaveHAR saveHAR;
+
+    @Autowired
+    private GetHARPageLoadTime harPageLoadTime;
+
+    @Autowired
+    private GetHARTransferredSize harTransferredSize;
+
+    @Autowired
     private SendKeys sendKeys;
 
     @Autowired
@@ -100,8 +115,9 @@ public class SeleniumHelperTest {
 
     @Test
     public void keyUpKeyDown() throws Exception {
+        doKeyword(newHAR, "jspringbot-search");
         doKeyword(navigateTo, "http://jspringbot.org/search.html");
-        doKeyword(sendKeys, "id=artist_search", "alvin de leon");
+        doKeyword(sendKeys, "id=artist_search", "sample sample sample");
 
         doKeyword(actionStart);
         doKeyword(actionMoveToElement, "id=artist_search");
@@ -111,6 +127,11 @@ public class SeleniumHelperTest {
         doKeyword(actionKeyUp, "SHIFT");
         doKeyword(actionSendKeys, "hello");
         doKeyword(actionPerform);
+
+        doKeyword(getHAR);
+        doKeyword(saveHAR);
+        doKeyword(harTransferredSize);
+        doKeyword(harPageLoadTime);
 
         helper.delay(5000);
     }
