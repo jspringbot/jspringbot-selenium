@@ -22,6 +22,7 @@ import org.jspringbot.KeywordInfo;
 import org.jspringbot.keyword.selenium.AbstractSeleniumKeyword;
 import org.jspringbot.keyword.selenium.BrowserMobProxyBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -33,11 +34,11 @@ import java.io.IOException;
 )
 public class SaveHAR extends AbstractSeleniumKeyword {
     @Autowired
-    private BrowserMobProxyBean proxyBean;
+    private ApplicationContext applicationContext;
 
     @Override
     public Object execute(Object[] params) throws IOException {
-        proxyBean.saveHar();
+        applicationContext.getBean(BrowserMobProxyBean.class).saveHar();
 
         return null;
     }

@@ -121,6 +121,8 @@ public class BrowserMobProxyBean implements InitializingBean, DisposableBean {
 
     @Override
     public void destroy() throws Exception {
-        server.stop();
+        if (server != null) {
+            server.stop();
+        }
     }
 }
