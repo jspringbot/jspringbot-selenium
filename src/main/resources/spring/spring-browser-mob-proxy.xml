@@ -11,5 +11,7 @@
     <property name="harDir" value="${selenium.browser.mob.proxy.har.save.dir:none}"/>
     <property name="excludeMimeTypePattern" value="${selenium.browser.mob.proxy.har.mime.type.exclude:none}"/>
     <property name="includeMimeTypePattern" value="${selenium.browser.mob.proxy.har.mime.type.include:none}"/>
+    <property name="excludeUrlPattern" value="${selenium.browser.mob.proxy.har.url.exclude:none}"/>
+    <property name="includeUrlPattern" value="${selenium.browser.mob.proxy.har.url.include:none}"/>
   </bean>
 </beans>

@@ -25,6 +25,8 @@ public class BrowserMobProxyBean implements InitializingBean, DisposableBean {
     private Har lastHar;
     private Pattern excludeMimeTypePattern;
     private Pattern includeMimeTypePattern;
+    private Pattern excludeUrlPattern;
+    private Pattern includeUrlPattern;
 
 
     public BrowserMobProxyBean(DesiredCapabilities capabilities) {
@@ -54,6 +56,18 @@ public class BrowserMobProxyBean implements InitializingBean, DisposableBean {
     public void setIncludeMimeTypePattern(String includeMimeTypePattern) {
         if(!StringUtils.equalsIgnoreCase(includeMimeTypePattern, "none")) {
             this.includeMimeTypePattern = Pattern.compile(includeMimeTypePattern, Pattern.CASE_INSENSITIVE);
+        }
+    }
+
+    public void setExcludeUrlPattern(String excludeUrlPattern) {
+        if(!StringUtils.equalsIgnoreCase(excludeUrlPattern, "none")) {
+            this.excludeUrlPattern = Pattern.compile(excludeUrlPattern, Pattern.CASE_INSENSITIVE);
+        }
+    }
+
+    public void setIncludeUrlPattern(String includeUrlPattern) {
+        if(!StringUtils.equalsIgnoreCase(includeUrlPattern, "none")) {
+            this.includeUrlPattern = Pattern.compile(includeUrlPattern, Pattern.CASE_INSENSITIVE);
         }
     }
 
@@ -126,14 +140,24 @@ public class BrowserMobProxyBean implements InitializingBean, DisposableBean {
 
     private boolean isInclude(HarEntry entry) {
         String mimeType = entry.getResponse().getContent().getMimeType();
+        String url = entry.getRequest().getUrl();
 
         if(excludeMimeTypePattern != null && excludeMimeTypePattern.matcher(mimeType).matches()) {
-            System.out.println("excluded: " + entry.getRequest().getUrl());
+            System.out.println("excluded: " + url);
             return false;
         }
 
         if(includeMimeTypePattern != null && !includeMimeTypePattern.matcher(mimeType).matches()) {
-            System.out.println("excluded: " + entry.getRequest().getUrl());
+            System.out.println("excluded: " + url);
+            return false;
+        }
+
+        if(excludeUrlPattern != null && excludeUrlPattern.matcher(url).matches()) {
+            System.out.println("excluded: " + url);
+            return false;
+        }
+        if(includeUrlPattern != null && !includeUrlPattern.matcher(url).matches()) {
+            System.out.println("excluded: " + url);
             return false;
         }
 
