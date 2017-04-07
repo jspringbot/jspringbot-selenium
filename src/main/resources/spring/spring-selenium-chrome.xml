@@ -30,9 +30,9 @@
     <property name="baseDir" value="${selenium.base.dir:none}"/>
     <property name="chromeDrivers">
       <map>
-        <entry key="Windows" value="${selenium.chrome.driver.url.download:http://chromedriver.storage.googleapis.com/}${selenium.chrome.driver.version:2.25}/chromedriver_win32.zip"/>
-        <entry key="MacOS" value="${selenium.chrome.driver.url.download:http://chromedriver.storage.googleapis.com/}${selenium.chrome.driver.version:2.25}/chromedriver_mac64.zip"/>
-        <entry key="Linux" value="${selenium.chrome.driver.url.download:http://chromedriver.storage.googleapis.com/}${selenium.chrome.driver.version:2.25}/chromedriver_linux#{systemProperties['sun.arch.data.model']}.zip"/>
+        <entry key="Windows" value="${selenium.chrome.driver.url.download:http://chromedriver.storage.googleapis.com/}${selenium.chrome.driver.version:2.28}/chromedriver_win32.zip"/>
+        <entry key="MacOS" value="${selenium.chrome.driver.url.download:http://chromedriver.storage.googleapis.com/}${selenium.chrome.driver.version:2.28}/chromedriver_mac64.zip"/>
+        <entry key="Linux" value="${selenium.chrome.driver.url.download:http://chromedriver.storage.googleapis.com/}${selenium.chrome.driver.version:2.28}/chromedriver_linux#{systemProperties['sun.arch.data.model']}.zip"/>
       </map>
     </property>
     <property name="chromeDeviceEmulation" value="${selenium.chrome.mobile.device:none}"/>
