@@ -14,6 +14,7 @@ import org.springframework.beans.factory.InitializingBean;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 public class BrowserMobProxyBean implements InitializingBean, DisposableBean {
     private DesiredCapabilities capabilities;
@@ -22,6 +23,9 @@ public class BrowserMobProxyBean implements InitializingBean, DisposableBean {
     private File harDir;
     private String lastName;
     private Har lastHar;
+    private Pattern excludeMimeTypePattern;
+    private Pattern includeMimeTypePattern;
+
 
     public BrowserMobProxyBean(DesiredCapabilities capabilities) {
         this.capabilities = capabilities;
@@ -38,6 +42,18 @@ public class BrowserMobProxyBean implements InitializingBean, DisposableBean {
             if (!this.harDir.isDirectory()) {
                 this.harDir.mkdirs();
             }
+        }
+    }
+
+    public void setExcludeMimeTypePattern(String excludeMimeTypePattern) {
+        if(!StringUtils.equalsIgnoreCase(excludeMimeTypePattern, "none")) {
+            this.excludeMimeTypePattern = Pattern.compile(excludeMimeTypePattern, Pattern.CASE_INSENSITIVE);
+        }
+    }
+
+    public void setIncludeMimeTypePattern(String includeMimeTypePattern) {
+        if(!StringUtils.equalsIgnoreCase(includeMimeTypePattern, "none")) {
+            this.includeMimeTypePattern = Pattern.compile(includeMimeTypePattern, Pattern.CASE_INSENSITIVE);
         }
     }
 
@@ -100,10 +116,28 @@ public class BrowserMobProxyBean implements InitializingBean, DisposableBean {
 
         int size = 0;
         for(HarEntry entry : lastHar.getLog().getEntries()) {
-            size += entry.getResponse().getBodySize();
+            if(isInclude(entry)) {
+                size += entry.getResponse().getBodySize();
+            }
         }
 
         return size;
+    }
+
+    private boolean isInclude(HarEntry entry) {
+        String mimeType = entry.getResponse().getContent().getMimeType();
+
+        if(excludeMimeTypePattern != null && excludeMimeTypePattern.matcher(mimeType).matches()) {
+            System.out.println("excluded: " + entry.getRequest().getUrl());
+            return false;
+        }
+
+        if(includeMimeTypePattern != null && !includeMimeTypePattern.matcher(mimeType).matches()) {
+            System.out.println("excluded: " + entry.getRequest().getUrl());
+            return false;
+        }
+
+        return true;
     }
 
     public int getHarPageLoadTime() throws IOException {
@@ -113,7 +147,9 @@ public class BrowserMobProxyBean implements InitializingBean, DisposableBean {
 
         int time = 0;
         for(HarEntry entry : lastHar.getLog().getEntries()) {
-            time += entry.getTime();
+            if(isInclude(entry)) {
+                time += entry.getTime();
+            }
         }
 
         return time;
