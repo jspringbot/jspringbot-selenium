@@ -50,6 +50,14 @@ For Image Compare Support:
 For Site Catalyst Support:
 | <import resource="classpath:spring/spring-selenium-analytics.xml"/>
 
+For Browser Mob Proxy Support (@since 1.6-SNAPSHOT):
+| <import resource="classpath:spring/spring-browser-mob-proxy.xml"/>
+| This resource is already imported in
+| - spring-selenium-chrome.xml
+| - spring-selenium-chrome-remote.xml
+| - spring-selenium-firefox.xml
+| This feature is not compatible with Saucelabs Support it uses proxy which conflict with saucelabs implementation.
+
 3. A {{jspringbot.properties}} file should exist in resources. See the possible properties below.
 
 | *Key* | *Default Value* | *Description* |
@@ -105,6 +113,14 @@ For Site Catalyst Support:
 | *Omniture Site Catalyst Automation Properties* | | |
 | {{omniture.debugger.location}} | url | url=http://sitecatalyst.omniture.com/sc_tools/stats_debugger.html, Third party stats debugger tool. If this becomes unavailable in the future, override the value with the new location. |
 | {{omniture.debugger.wait.time.in.millis}} | 3000 | Wait time for URL-decoding of site catalyst variables and copying of html source of the stats debugger window. |
+| *Browser Mob Proxy Properties* | | |
+| {{selenium.browser.mob.proxy.enabled}} | false | To enable/disabled browser mob proxy for harvesting HAR record |
+| {{selenium.browser.mob.proxy.har.save.dir}} | none | Directory where HAR file is saved. |
+| {{selenium.browser.mob.proxy.har.mime.type.exclude}} | none | Exclude URL with mimetype when harvesitng HAR record. |
+| {{selenium.browser.mob.proxy.har.mime.type.include}} | none | Include URL with mimetype when harvesitng HAR record. |
+| {{selenium.browser.mob.proxy.har.mime.type.include}} | none | Include URL with mimetype when harvesitng HAR record. |
+| {{selenium.browser.mob.proxy.har.url.exclude}} | none | Include URL(s) when harvesitng HAR record (using regex). |
+| {{selenium.browser.mob.proxy.har.url.include}} | none | Include URL(s) when harvesitng HAR record (using regex). |
 
 *Chrome Devices*
 
@@ -199,6 +215,12 @@ https://developer.chrome.com/devtools/docs/device-mode
 *Firefox Configuration for Auto Download*
 
 | Go to Tools > Options > General > Save file to <browse location>
+
+*Sample jspringbot.properties with Browser Mob Proxy Support*
+
+| selenium.browser.mob.proxy.enabled=true
+| selenium.browser.mob.proxy.har.save.dir=${project.build.directory}/robotframework-reports/har
+| selenium.browser.mob.proxy.har.url.include=.*www\\.google\\.com.*|.*www\\.yahoo\\.com.*
 
 4. Add {{JSpringBotGlobal}} library in the in the test suite settings.
 
