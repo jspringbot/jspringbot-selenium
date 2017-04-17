@@ -56,7 +56,7 @@ For Browser Mob Proxy Support (@since 1.6-SNAPSHOT):
 | - spring-selenium-chrome.xml
 | - spring-selenium-chrome-remote.xml
 | - spring-selenium-firefox.xml
-| This feature is not compatible with Saucelabs Support it uses proxy which conflict with saucelabs implementation.
+| This feature is not compatible with Saucelabs Support it uses proxy (127.0.0.1) which conflict with saucelabs tunnel.
 
 3. A {{jspringbot.properties}} file should exist in resources. See the possible properties below.
 
