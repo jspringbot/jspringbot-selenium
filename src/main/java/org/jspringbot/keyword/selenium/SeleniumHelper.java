@@ -135,10 +135,10 @@ public class SeleniumHelper {
         executor.executeScript(String.format("arguments[0].id = '%s';", id), el);
     }
 
-    public Boolean findElement(String locator){
+    public Boolean findElement(String locator) {
         LOG.keywordAppender().appendLocator(locator);
 
-        if(!isElementPresent(locator)) {
+        if (!isElementPresent(locator)) {
             LOG.info(String.format("Page should have contained element '%s' but did not.", locator));
             return false;
         }
@@ -150,7 +150,7 @@ public class SeleniumHelper {
         this.screenCaptureDir = screenCaptureDir;
 
         // create dir if not existing
-        if(!screenCaptureDir.isDirectory()) {
+        if (!screenCaptureDir.isDirectory()) {
             screenCaptureDir.mkdirs();
         }
     }
@@ -163,18 +163,18 @@ public class SeleniumHelper {
         KeywordAppender appender = LOG.keywordAppender();
         appender.appendArgument("link", url);
 
-        if(autoZoomIn != 0 || autoZoomOut != 0) {
+        if (autoZoomIn != 0 || autoZoomOut != 0) {
             appender.appendArgument("domain", domain);
             appender.appendArgument("autoZoomIn", autoZoomIn);
             appender.appendArgument("autoZoomOut", autoZoomOut);
         }
 
-        if(domain != null && !hasZoomed(domain)) {
-            if(autoZoomIn > 0) {
+        if (domain != null && !hasZoomed(domain)) {
+            if (autoZoomIn > 0) {
                 zoomIn(autoZoomIn);
             }
 
-            if(autoZoomOut > 0) {
+            if (autoZoomOut > 0) {
                 zoomOut(autoZoomOut);
             }
 
@@ -183,12 +183,12 @@ public class SeleniumHelper {
     }
 
     private boolean hasZoomed(String domain) {
-        if(zoomedDomain.contains(domain)) {
+        if (zoomedDomain.contains(domain)) {
             return true;
         }
 
-        for(String item : zoomedDomain) {
-            if(StringUtils.contains(domain, item) || StringUtils.contains(item, domain)) {
+        for (String item : zoomedDomain) {
+            if (StringUtils.contains(domain, item) || StringUtils.contains(item, domain)) {
                 return true;
             }
         }
@@ -236,7 +236,7 @@ public class SeleniumHelper {
     public String confirmAction() {
         String text = null;
 
-        try{
+        try {
             Alert alert = driver.switchTo().alert();
             text = alert.getText();
 
@@ -258,7 +258,7 @@ public class SeleniumHelper {
         cancelOnNextConfirmation = true;
     }
 
-    public void checkboxShouldBeSelected(String locator){
+    public void checkboxShouldBeSelected(String locator) {
         WebElement el = getCheckbox(locator);
 
         LOG.keywordAppender()
@@ -311,7 +311,7 @@ public class SeleniumHelper {
 
         WebElement el = finder.find(locator);
 
-        if(el == null) {
+        if (el == null) {
             throw new IllegalStateException(String.format("ERROR: Element %s not found", locator));
         }
 
@@ -341,7 +341,7 @@ public class SeleniumHelper {
         WebElement image = finder.find(locator, false, "img");
 
         if (image == null) {
-            image = finder.find(locator,"input");
+            image = finder.find(locator, "input");
         }
 
         image.click();
@@ -357,7 +357,7 @@ public class SeleniumHelper {
     public List<String> getAllLinks() {
         List<String> links = new ArrayList<String>();
 
-        WebElement el = finder.find("tag=a",false,"a");
+        WebElement el = finder.find("tag=a", false, "a");
         links.add(el.getAttribute("id"));
 
         return links;
@@ -393,9 +393,9 @@ public class SeleniumHelper {
                 .appendArgument("Y", point.getY());
 
         //Crop the entire page screenshot to get only element screenshot
-        BufferedImage eleScreenshot= fullImg.getSubimage(point.getX(), point.getY(), eleWidth, eleHeight);
+        BufferedImage eleScreenshot = fullImg.getSubimage(point.getX(), point.getY(), eleWidth, eleHeight);
 
-        if(options != null) {
+        if (options != null) {
             eleScreenshot = processOption(eleScreenshot, options);
         }
 
@@ -418,7 +418,7 @@ public class SeleniumHelper {
             }
 
             return map;
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw new IllegalArgumentException("Invalid option: " + options);
         }
     }
@@ -432,7 +432,7 @@ public class SeleniumHelper {
 
         File file = newScreenCaptureFile();
 
-        if(options == null) {
+        if (options == null) {
             FileOutputStream out = null;
             try {
 
@@ -458,7 +458,7 @@ public class SeleniumHelper {
     private BufferedImage processOption(BufferedImage fullImg, String options) {
         Map<String, String> optionMap = getOptions(options);
 
-        if(optionMap.containsKey("x") && optionMap.containsKey("y") && optionMap.containsKey("width") && optionMap.containsKey("height")) {
+        if (optionMap.containsKey("x") && optionMap.containsKey("y") && optionMap.containsKey("width") && optionMap.containsKey("height")) {
             int x = Integer.parseInt(optionMap.get("x"));
             int y = Integer.parseInt(optionMap.get("y"));
             int width = Integer.parseInt(optionMap.get("width"));
@@ -474,7 +474,7 @@ public class SeleniumHelper {
         }
 
         String style = optionMap.get("style");
-        if(StringUtils.equals(style, "grayscale")) {
+        if (StringUtils.equals(style, "grayscale")) {
             LOG.keywordAppender().appendArgument("option.grayscaled", true);
 
             toGray(fullImg);
@@ -486,15 +486,15 @@ public class SeleniumHelper {
     private void toGray(BufferedImage image) {
         int width = image.getWidth();
         int height = image.getHeight();
-        for(int i=0; i<height; i++){
-            for(int j=0; j<width; j++){
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
                 Color c = new Color(image.getRGB(j, i));
-                int red = (int)(c.getRed() * 0.21);
-                int green = (int)(c.getGreen() * 0.72);
-                int blue = (int)(c.getBlue() *0.07);
+                int red = (int) (c.getRed() * 0.21);
+                int green = (int) (c.getGreen() * 0.72);
+                int blue = (int) (c.getBlue() * 0.07);
                 int sum = red + green + blue;
-                Color newColor = new Color(sum,sum,sum);
-                image.setRGB(j,i,newColor.getRGB());
+                Color newColor = new Color(sum, sum, sum);
+                image.setRGB(j, i, newColor.getRGB());
             }
         }
     }
@@ -526,7 +526,7 @@ public class SeleniumHelper {
         deleteCookie(cookie);
     }
 
-    public String getCookieValue (String cookieName) {
+    public String getCookieValue(String cookieName) {
         LOG.keywordAppender().appendArgument("Cookie Name", cookieName);
 
         Cookie cookie = driver.manage().getCookieNamed(cookieName);
@@ -540,10 +540,10 @@ public class SeleniumHelper {
         }
     }
 
-    public Set<Cookie> getCookies () {
+    public Set<Cookie> getCookies() {
         Set<Cookie> cookies = driver.manage().getCookies();
 
-        for(Cookie cookie : cookies) {
+        for (Cookie cookie : cookies) {
             LOG.keywordAppender().appendArgument(cookie.getName(), cookie.getValue());
         }
 
@@ -585,7 +585,7 @@ public class SeleniumHelper {
                 .appendLocator(locator)
                 .appendArgument("Enabled", isEnabled(locator));
 
-        if (isEnabled(locator))  {
+        if (isEnabled(locator)) {
             throw new AssertionError("Element is enabled.");
         }
     }
@@ -598,7 +598,7 @@ public class SeleniumHelper {
 
         LOG.keywordAppender().appendArgument("Enabled", isEnabled);
 
-        if (!isEnabled)  {
+        if (!isEnabled) {
             throw new AssertionError("Element is disabled");
         }
     }
@@ -675,7 +675,7 @@ public class SeleniumHelper {
                 .appendArgument("Actual", actual)
                 .appendArgument("Expected", expected);
 
-        if(!StringUtils.contains(StringUtils.trim(actual), StringUtils.trim(expected))) {
+        if (!StringUtils.contains(StringUtils.trim(actual), StringUtils.trim(expected))) {
             throw new AssertionError("Element should have contained text.");
         }
     }
@@ -691,10 +691,10 @@ public class SeleniumHelper {
                 .appendArgument("Class Names", classNames)
                 .appendArgument("Expected Class Name", expectedClassName);
 
-        if(StringUtils.isNotEmpty(classNames)) {
+        if (StringUtils.isNotEmpty(classNames)) {
             List<String> classes = Arrays.asList(StringUtils.split(classNames, " "));
 
-            if(classes.contains(expectedClassName)) {
+            if (classes.contains(expectedClassName)) {
                 return;
             }
         }
@@ -713,8 +713,8 @@ public class SeleniumHelper {
                 .appendArgument("Class Names", typeNames)
                 .appendArgument("Expected Type Name", expectedTypeName);
 
-        if(StringUtils.isNotEmpty(typeNames)) {
-            if(Arrays.asList(StringUtils.split(typeNames, " ")).contains(expectedTypeName)) {
+        if (StringUtils.isNotEmpty(typeNames)) {
+            if (Arrays.asList(StringUtils.split(typeNames, " ")).contains(expectedTypeName)) {
                 return;
             }
         }
@@ -733,8 +733,8 @@ public class SeleniumHelper {
                 .appendArgument("Class Names", classNames)
                 .appendArgument("Expected Class Name", expectedClassName);
 
-        if(StringUtils.isNotEmpty(classNames)) {
-            if(Arrays.asList(StringUtils.split(classNames, " ")).contains(expectedClassName)) {
+        if (StringUtils.isNotEmpty(classNames)) {
+            if (Arrays.asList(StringUtils.split(classNames, " ")).contains(expectedClassName)) {
                 throw new AssertionError("Element should have not contained class");
             }
         }
@@ -757,10 +757,10 @@ public class SeleniumHelper {
     }
 
     public void simulateDragAndDrop(String cssSrcLocator, String cssDestLocator) throws IOException {
-        if(StringUtils.startsWith(cssSrcLocator, "css=")) {
+        if (StringUtils.startsWith(cssSrcLocator, "css=")) {
             cssSrcLocator = cssSrcLocator.substring(4);
         }
-        if(StringUtils.startsWith(cssDestLocator, "css=")) {
+        if (StringUtils.startsWith(cssDestLocator, "css=")) {
             cssDestLocator = cssDestLocator.substring(4);
         }
 
@@ -768,11 +768,11 @@ public class SeleniumHelper {
                 .appendLocator("Source: css=" + cssSrcLocator)
                 .appendLocator("Destination: css=" + cssDestLocator);
 
-        if(!(Boolean) executeJavascript("return (typeof $ != 'undefined');")) {
+        if (!(Boolean) executeJavascript("return (typeof $ != 'undefined');")) {
             LOG.keywordAppender().appendArgument("jqueryLink", jqueryLink);
             executeJavascript(jqueryLink);
         }
-        if(!(Boolean) executeJavascript("return (typeof $.fn.simulateDragDrop != 'undefined');")) {
+        if (!(Boolean) executeJavascript("return (typeof $.fn.simulateDragDrop != 'undefined');")) {
             LOG.keywordAppender().appendArgument("dragAndDrop", "classpath:js/dragAndDrop.js");
 
             executeJavascript("classpath:js/dragAndDrop.js");
@@ -782,7 +782,7 @@ public class SeleniumHelper {
     }
 
     public void addJQuery() throws IOException {
-        if(!(Boolean) executeJavascript("return (typeof $ != 'undefined');")) {
+        if (!(Boolean) executeJavascript("return (typeof $ != 'undefined');")) {
             LOG.keywordAppender().appendArgument("jqueryLink", jqueryLink);
             executeJavascript(jqueryLink);
         }
@@ -797,7 +797,7 @@ public class SeleniumHelper {
     }
 
     public Object executeJavascript(String locator, String code, Object... args) throws IOException {
-        if(StringUtils.startsWith(code, "file:") || StringUtils.startsWith(code, "classpath:") || StringUtils.startsWith(code, "http:") || StringUtils.startsWith(code, "https:")) {
+        if (StringUtils.startsWith(code, "file:") || StringUtils.startsWith(code, "classpath:") || StringUtils.startsWith(code, "http:") || StringUtils.startsWith(code, "https:")) {
             LOG.keywordAppender().appendArgument("Resource", code);
             ResourceEditor editor = new ResourceEditor();
             editor.setAsText(code);
@@ -806,15 +806,15 @@ public class SeleniumHelper {
             code = new String(IOUtils.toCharArray(resource.getInputStream()));
         }
 
-        if(locator != null) {
+        if (locator != null) {
             LOG.keywordAppender().appendLocator(locator);
         }
 
         LOG.keywordAppender().appendJavascript(code);
 
         Object returnedValue;
-        if(locator == null) {
-            if(args == null || args.length == 0) {
+        if (locator == null) {
+            if (args == null || args.length == 0) {
                 returnedValue = executor.executeScript(code);
             } else {
                 returnedValue = executor.executeScript(code, args);
@@ -822,7 +822,7 @@ public class SeleniumHelper {
         } else {
             WebElement el = finder.find(locator);
 
-            if(args == null || args.length == 0) {
+            if (args == null || args.length == 0) {
                 returnedValue = executor.executeScript(code, el);
             } else {
                 Object[] args1 = new Object[args.length + 1];
@@ -832,7 +832,7 @@ public class SeleniumHelper {
             }
         }
 
-        if(returnedValue != null) {
+        if (returnedValue != null) {
             LOG.keywordAppender().appendArgument("Returned Value", returnedValue);
         }
 
@@ -876,7 +876,7 @@ public class SeleniumHelper {
         }
     }
 
-    public void elementAttributeValueShouldContain(String attributeLocator, String expectedValue){
+    public void elementAttributeValueShouldContain(String attributeLocator, String expectedValue) {
         LOG.keywordAppender().appendLocator(attributeLocator);
 
         String actualValue = getElementAttribute(attributeLocator);
@@ -885,7 +885,7 @@ public class SeleniumHelper {
                 .appendArgument("Actual Element Attribute Value", actualValue)
                 .appendArgument("Expected Element Attribute Value", expectedValue);
 
-        if(!StringUtils.contains(StringUtils.trim(actualValue), StringUtils.trim(expectedValue))) {
+        if (!StringUtils.contains(StringUtils.trim(actualValue), StringUtils.trim(expectedValue))) {
             throw new AssertionError("Element attribute value should have contained text.");
         }
     }
@@ -926,7 +926,7 @@ public class SeleniumHelper {
     }
 
     public int getMatchingCSSCount(String cssLocator) {
-        if(StringUtils.startsWith(cssLocator, "css=")) {
+        if (StringUtils.startsWith(cssLocator, "css=")) {
             cssLocator = cssLocator.substring(4);
         }
 
@@ -940,7 +940,7 @@ public class SeleniumHelper {
     }
 
     public int getMatchingXPathCount(String xpath) {
-        if(StringUtils.startsWith(xpath, "xpath=")) {
+        if (StringUtils.startsWith(xpath, "xpath=")) {
             xpath = xpath.substring(6);
         }
 
@@ -967,7 +967,7 @@ public class SeleniumHelper {
 
         boolean textIsSelected = false;
 
-        for (WebElement selected: selectOptions) {
+        for (WebElement selected : selectOptions) {
             if (selected.isSelected() && selected.getText().equalsIgnoreCase(selectedText)) {
                 textIsSelected = true;
                 break;
@@ -1007,7 +1007,7 @@ public class SeleniumHelper {
         List<String> selectedListValues = getSelectedListValues(locator);
 
         if (CollectionUtils.isEmpty(selectedListValues)) {
-            throw new IllegalArgumentException(String.format("Select list with locator '%s' does not have a single selected value",locator));
+            throw new IllegalArgumentException(String.format("Select list with locator '%s' does not have a single selected value", locator));
         }
 
         LOG.keywordAppender().appendArgument("Selected Value", selectedListValues.get(0));
@@ -1020,12 +1020,22 @@ public class SeleniumHelper {
         List<WebElement> selectedOptions = getSelectListOptionsSelected(locator);
 
         if (CollectionUtils.isEmpty(selectedOptions)) {
-            throw new IllegalArgumentException(String.format("Select list with locator '%s' does not have any selected values",locator));
+            throw new IllegalArgumentException(String.format("Select list with locator '%s' does not have any selected values", locator));
         }
 
         List<String> values = getValuesForOptions(selectedOptions);
 
         LOG.keywordAppender().appendArgument("Selected Values", values);
+
+        return values;
+    }
+
+    public List<String> getListValues(String locator) {
+        List<WebElement> selectOptions = getSelectListOptions(locator);
+
+        List<String> values = getValuesForOptions(selectOptions);
+
+        LOG.keywordAppender().appendArgument("Values",values);
 
         return values;
     }

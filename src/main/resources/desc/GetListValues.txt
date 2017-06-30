@@ -1,0 +1,5 @@
+Returns the values of elements (as a list) from the list identified by locator.
+
+Fails if there is no selection.
+
+List keywords work on both lists and combo boxes.
