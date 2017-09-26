@@ -6,6 +6,7 @@ import net.lightbody.bmp.client.ClientUtil;
 import net.lightbody.bmp.core.har.Har;
 import net.lightbody.bmp.core.har.HarEntry;
 import org.apache.commons.lang.StringUtils;
+import org.jspringbot.syntax.HighlightRobotLogger;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.InitializingBean;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class BrowserMobProxyBean implements InitializingBean, DisposableBean {
@@ -28,6 +30,7 @@ public class BrowserMobProxyBean implements InitializingBean, DisposableBean {
     private Pattern excludeUrlPattern;
     private Pattern includeUrlPattern;
 
+    public static final HighlightRobotLogger LOG = HighlightRobotLogger.getLogger(BrowserMobProxyBean.class);
 
     public BrowserMobProxyBean(DesiredCapabilities capabilities) {
         this.capabilities = capabilities;
@@ -137,6 +140,15 @@ public class BrowserMobProxyBean implements InitializingBean, DisposableBean {
 
         return size;
     }
+
+    public List<HarEntry> getHarEntries() throws IOException {
+        if(lastHar == null) {
+            throw new IllegalStateException("No har found.");
+        }
+
+        return lastHar.getLog().getEntries();
+    }
+
 
     private boolean isInclude(HarEntry entry) {
         String mimeType = entry.getResponse().getContent().getMimeType();

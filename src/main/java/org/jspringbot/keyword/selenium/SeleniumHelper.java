@@ -29,6 +29,10 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.logging.LogEntries;
+import org.openqa.selenium.logging.LogEntry;
+import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -37,6 +41,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceEditor;
 
 import javax.imageio.ImageIO;
+import javax.lang.model.element.Element;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -354,11 +359,42 @@ public class SeleniumHelper {
         el.click();
     }
 
-    public List<String> getAllLinks() {
-        List<String> links = new ArrayList<String>();
+    public Set<String> getAllLinks() {
+        Set<String> links = new HashSet<String>();
 
-        WebElement el = finder.find("tag=a", false, "a");
-        links.add(el.getAttribute("id"));
+        List<WebElement> elList = driver.findElements(By.cssSelector("a"));
+        for(WebElement el:elList) {
+            System.out.println("=================================");
+            System.out.println("el id=" + el.getAttribute("id"));
+            System.out.println("el text=" + el.getText());
+            System.out.println("el href=" + el.getAttribute("href"));
+
+            links.add(el.getAttribute("href"));
+            //LOG.keywordAppender()
+            //        .append("el id  ", el.getAttribute("id"))
+            //        .append("el text", el.getText())
+            //        .append("el href", el.getAttribute("href"));
+        }
+
+        return links;
+    }
+
+    public Set<String> getAllButtons() {
+        Set<String> links = new HashSet<String>();
+
+        List<WebElement> elList = driver.findElements(By.cssSelector("button"));
+        for(WebElement el:elList) {
+            System.out.println("=================================");
+            System.out.println("el id=" + el.getAttribute("id"));
+            System.out.println("el text=" + el.getText());
+            System.out.println("el href=" + el.getAttribute("button"));
+
+            links.add(el.getAttribute("href"));
+            LOG.keywordAppender()
+                    .append("el id  ", el.getAttribute("id"))
+                    .append("el text", el.getText())
+                    .append("el href", el.getAttribute("button"));
+        }
 
         return links;
     }
@@ -2667,6 +2703,17 @@ public class SeleniumHelper {
         return html.matches("^[\\s\\S]*" + text + "[\\s\\S]*$");
     }
 
+    public List<String> getJSErrorMessageList() {
+        LogEntries jserrors = driver.manage().logs().get(LogType.BROWSER);
+        List<String> jsErrorMessageList = new ArrayList<String>();
+        for (LogEntry error : jserrors) {
+            LOG.keywordAppender().appendArgument("Text", error.getMessage());
+            System.out.println("JS Error ==============" + error.getMessage());
+            jsErrorMessageList.add(error.getMessage());
+        }
+        return jsErrorMessageList;
+    }
+
     private File newScreenCaptureFile() {
         String name = String.format("screen_capture_%d_%d.png", screenCaptureSeed, ++screenCaptureCtr);
 
@@ -2958,4 +3005,6 @@ public class SeleniumHelper {
 
         return key.toString();
     }
+
+
 }

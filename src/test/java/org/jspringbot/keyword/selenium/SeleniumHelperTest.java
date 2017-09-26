@@ -388,10 +388,18 @@ public class SeleniumHelperTest {
 
     @Test
     @Ignore
-    // TODO - Still failing
     public void testGetAllLinks() throws Exception {
         helper.navigateTo("http://www.google.com.ph");
-        System.out.println(helper.getAllLinks());
+        helper.delay(10000);
+        Assert.assertTrue(!helper.getAllLinks().isEmpty());
+    }
+
+    @Test
+    @Ignore
+    public void testGetAllButton() throws Exception {
+        helper.navigateTo("http://www.google.com.ph");
+        helper.delay(10000);
+        Assert.assertTrue(!helper.getAllButtons().isEmpty());
     }
 
     @Test
@@ -448,5 +456,12 @@ public class SeleniumHelperTest {
     public void testPageShouldContainCheckbox() {
         helper.navigateTo("http://www.echoecho.com/htmlforms09.htm");
         helper.pageShouldContainCheckbox("name=option1");
+    }
+
+    @Test
+    @Ignore
+    public void testGetJSErrorMessageList() {
+        helper.navigateTo("http://only-testing-blog.blogspot.com/2015/01/table-with-checkbox.html");
+        Assert.assertTrue(!helper.getJSErrorMessageList().isEmpty());
     }
 }

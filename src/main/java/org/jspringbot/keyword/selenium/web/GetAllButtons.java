@@ -24,13 +24,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 @KeywordInfo(
-        name = "Get All Links",
-        description = "classpath:desc/GetAllLinks.txt"
+        name = "Get All Buttons",
+        description = "classpath:desc/GetAllButtons.txt"
 )
-public class GetAllLinks extends AbstractSeleniumKeyword {
+public class GetAllButtons extends AbstractSeleniumKeyword {
 
     @Override
     public Object execute(Object[] params) {
-        return helper.getAllLinks();
+        return helper.getAllButtons();
     }
 }

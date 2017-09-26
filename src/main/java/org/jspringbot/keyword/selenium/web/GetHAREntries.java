@@ -20,17 +20,25 @@ package org.jspringbot.keyword.selenium.web;
 
 import org.jspringbot.KeywordInfo;
 import org.jspringbot.keyword.selenium.AbstractSeleniumKeyword;
+import org.jspringbot.keyword.selenium.BrowserMobProxyBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+
+import java.io.IOException;
 
 @Component
 @KeywordInfo(
-        name = "Get All Links",
-        description = "classpath:desc/GetAllLinks.txt"
+        name = "Get HAR Entries",
+        description = "classpath:desc/GetHAREntries.txt"
 )
-public class GetAllLinks extends AbstractSeleniumKeyword {
+public class GetHAREntries extends AbstractSeleniumKeyword {
+
+    @Autowired
+    private ApplicationContext applicationContext;
 
     @Override
-    public Object execute(Object[] params) {
-        return helper.getAllLinks();
+    public Object execute(Object[] params) throws IOException {
+        return applicationContext.getBean(BrowserMobProxyBean.class).getHarEntries();
     }
 }
