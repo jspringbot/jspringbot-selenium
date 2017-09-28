@@ -363,18 +363,15 @@ public class SeleniumHelper {
         Set<String> links = new HashSet<String>();
 
         List<WebElement> elList = driver.findElements(By.cssSelector("a"));
+        System.out.println("=================================");
         for(WebElement el:elList) {
-            System.out.println("=================================");
-            System.out.println("el id        =" + el.getAttribute("id"));
-            System.out.println("el text      =" + el.getText());
             System.out.println("el href      =" + el.getAttribute("href"));
-            System.out.println("el data-i18n =" + el.getAttribute("data-i18n"));
-
             String str = el.getAttribute("href");
             if (!str.isEmpty()) {
                links.add(str);
             }
         }
+        System.out.println("=================================");
 
         return links;
     }
