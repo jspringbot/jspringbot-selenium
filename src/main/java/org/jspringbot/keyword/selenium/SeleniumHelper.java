@@ -365,15 +365,15 @@ public class SeleniumHelper {
         List<WebElement> elList = driver.findElements(By.cssSelector("a"));
         for(WebElement el:elList) {
             System.out.println("=================================");
-            System.out.println("el id=" + el.getAttribute("id"));
-            System.out.println("el text=" + el.getText());
-            System.out.println("el href=" + el.getAttribute("href"));
+            System.out.println("el id        =" + el.getAttribute("id"));
+            System.out.println("el text      =" + el.getText());
+            System.out.println("el href      =" + el.getAttribute("href"));
+            System.out.println("el data-i18n =" + el.getAttribute("data-i18n"));
 
-            links.add(el.getAttribute("href"));
-            //LOG.keywordAppender()
-            //        .append("el id  ", el.getAttribute("id"))
-            //        .append("el text", el.getText())
-            //        .append("el href", el.getAttribute("href"));
+            String str = el.getAttribute("href");
+            if (!str.isEmpty()) {
+               links.add(str);
+            }
         }
 
         return links;
