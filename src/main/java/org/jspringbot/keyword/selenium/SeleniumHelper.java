@@ -359,16 +359,16 @@ public class SeleniumHelper {
         el.click();
     }
 
-    public Set<String> getAllLinks() {
-        Set<String> links = new HashSet<String>();
+    public LinkedHashSet<String> getAllLinks() {
+        LinkedHashSet<String> links = new LinkedHashSet<String>();
 
         List<WebElement> elList = driver.findElements(By.cssSelector("a"));
         System.out.println("=================================");
         for(WebElement el:elList) {
             System.out.println("el href      =" + el.getAttribute("href"));
-            String str = el.getAttribute("href");
-            if (!str.isEmpty()) {
-               links.add(str);
+            String href = el.getAttribute("href");
+            if (href != null && !StringUtils.isEmpty(href) && !StringUtils.startsWithIgnoreCase(href,"javascript") ) {
+                links.add(href);
             }
         }
         System.out.println("=================================");
