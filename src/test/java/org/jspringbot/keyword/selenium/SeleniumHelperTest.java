@@ -28,6 +28,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Set;
 
 @Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -391,7 +393,13 @@ public class SeleniumHelperTest {
     public void testGetAllLinks() throws Exception {
         helper.navigateTo("http://www.google.com.ph");
         helper.delay(10000);
-        Assert.assertTrue(!helper.getAllLinks().isEmpty());
+        Set<String> links = helper.getAllLinks();
+        Assert.assertTrue(!links.isEmpty());
+
+        Iterator iter = links.iterator() ;
+        while (iter.hasNext()) {
+            System.out.println("href= " + iter.next());
+        }
     }
 
     @Test
