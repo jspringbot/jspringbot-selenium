@@ -5,7 +5,9 @@ import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.client.ClientUtil;
 import net.lightbody.bmp.core.har.Har;
 import net.lightbody.bmp.core.har.HarEntry;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.jspringbot.syntax.HighlightRobotLogger;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.remote.CapabilityType;
@@ -15,7 +17,10 @@ import org.springframework.beans.factory.InitializingBean;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.*;
 import java.util.List;
+import java.util.Stack;
 import java.util.regex.Pattern;
 
 public class BrowserMobProxyBean implements InitializingBean, DisposableBean {
@@ -29,6 +34,7 @@ public class BrowserMobProxyBean implements InitializingBean, DisposableBean {
     private Pattern includeMimeTypePattern;
     private Pattern excludeUrlPattern;
     private Pattern includeUrlPattern;
+    private Stack<File> harDirStack = new Stack<File>();
 
     public static final HighlightRobotLogger LOG = HighlightRobotLogger.getLogger(BrowserMobProxyBean.class);
 
@@ -91,6 +97,40 @@ public class BrowserMobProxyBean implements InitializingBean, DisposableBean {
         }
     }
 
+    public void newHarFromUrl(String url) throws URISyntaxException, MalformedURLException, UnsupportedEncodingException {
+        URL uri = new URL(url);
+        String[] splits = StringUtils.split(uri.getPath(), '/');
+
+        String name = uri.getHost();
+        if(splits.length > 0) {
+            File baseDir = createDir(new File(harDir, uri.getHost()));
+            for(int i = 0; i < splits.length - 1; i++) {
+                baseDir = createDir(new File(baseDir, splits[i]));
+            }
+
+            harDirStack.add(baseDir);
+            name = splits[splits.length - 1];
+        }
+
+        if(StringUtils.isNotBlank(uri.getQuery())) {
+            name += "-q-" + URLEncoder.encode(uri.getQuery(), "UTF-8");
+        }
+        if(StringUtils.isNotBlank(uri.getRef())) {
+            name += "#" + URLEncoder.encode(uri.getRef(), "UTF-8");
+        }
+
+        newHar(name);
+    }
+
+    File createDir(File dir) {
+        if(!dir.isDirectory()) {
+            dir.mkdirs();
+        }
+
+        return dir;
+    }
+
+
     public void newHar(String name) {
         validate();
 
@@ -122,7 +162,12 @@ public class BrowserMobProxyBean implements InitializingBean, DisposableBean {
             throw new IllegalStateException("No har found.");
         }
 
-        File newFile = new File(harDir, lastName + ".har");
+        File baseDir = harDir;
+        if(CollectionUtils.isNotEmpty(harDirStack)) {
+            baseDir = harDirStack.pop();
+        }
+
+        File newFile = new File(baseDir, lastName + ".har");
         lastHar.writeTo(newFile);
     }
 
