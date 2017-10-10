@@ -337,7 +337,7 @@ public class SeleniumHelperTest {
     }
 
     @Test
-    //@Ignore
+    @Ignore
     public void urlCaptureScreenshot() throws IOException {
         helper.navigateTo("https://maven.apache.org/plugins-archives/maven-surefire-plugin-2.12.4/examples/skipping-test.html");
         helper.delay(5000);
