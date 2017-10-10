@@ -520,7 +520,13 @@ public class SeleniumHelper {
 
         name = String.format("%s_%d.png", name, ++screenCaptureCtr);
 
-        File file = new File(screenCaptureDirStack.pop(), name);
+        File file ;
+        if (screenCaptureDirStack.size() == 0){
+            file = new File(name);
+        } else {
+            file = new File(screenCaptureDirStack.pop(), name);
+        }
+
 
         if (options == null) {
             FileOutputStream out = null;
