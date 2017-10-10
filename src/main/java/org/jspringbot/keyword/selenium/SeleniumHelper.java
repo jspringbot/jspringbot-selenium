@@ -32,7 +32,6 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
-import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -41,7 +40,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceEditor;
 
 import javax.imageio.ImageIO;
-import javax.lang.model.element.Element;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -50,6 +48,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -76,6 +75,8 @@ public class SeleniumHelper {
     protected long screenCaptureSeed = System.currentTimeMillis();
 
     protected File screenCaptureDir;
+
+    private Stack<File> screenCaptureDirStack = new Stack<File>();
 
     private Set<String> zoomedDomain = new HashSet<String>();
 
@@ -486,6 +487,70 @@ public class SeleniumHelper {
         }
 
         return file;
+    }
+
+    public File urlCaptureScreenshot(String screenCaptureName) throws IOException {
+        return urlCaptureScreenshot(screenCaptureName, null);
+    }
+
+    public File urlCaptureScreenshot(String screenCaptureName, String options) throws IOException {
+        byte[] bytes = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+
+        URL uri = new URL(screenCaptureName);
+        String[] splits = StringUtils.split(uri.getPath(), '/');
+        String name = uri.getHost();
+        if(splits.length > 0) {
+            File baseDir = this.createDir(new File(screenCaptureDir, uri.getHost()));
+
+            for(int i = 0; i < splits.length - 1; ++i) {
+                baseDir = this.createDir(new File(baseDir, splits[i]));
+            }
+
+            screenCaptureDirStack.add(baseDir);
+            name = splits[splits.length - 1];
+        }
+
+        if(StringUtils.isNotBlank(uri.getQuery())) {
+            name = name + "-q-" + URLEncoder.encode(uri.getQuery(), "UTF-8");
+        }
+
+        if(StringUtils.isNotBlank(uri.getRef())) {
+            name = name + "#" + URLEncoder.encode(uri.getRef(), "UTF-8");
+        }
+
+        name = String.format("%s_%d.png", name, ++screenCaptureCtr);
+
+        File file = new File(screenCaptureDirStack.pop(), name);
+
+        if (options == null) {
+            FileOutputStream out = null;
+            try {
+
+                LOG.html("Screen captured (%d): <br /> <img src='%s'/>", screenCaptureCtr, file.getName());
+
+                out = new FileOutputStream(file);
+                IOUtils.write(bytes, out);
+
+                return file;
+            } finally {
+                IOUtils.closeQuietly(out);
+            }
+        } else {
+            LOG.html("Screen captured (%d): <br /> <img src='%s'/>", screenCaptureCtr, file.getName());
+
+            BufferedImage fullImg = ImageIO.read(new ByteArrayInputStream(bytes));
+            ImageIO.write(processOption(fullImg, options), "png", file);
+        }
+
+        return file;
+    }
+
+    File createDir(File dir) {
+        if(!dir.isDirectory()) {
+            dir.mkdirs();
+        }
+
+        return dir;
     }
 
     private BufferedImage processOption(BufferedImage fullImg, String options) {

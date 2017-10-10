@@ -31,7 +31,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Set;
 
-@Ignore
+//@Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:spring/spring-selenium-chrome.xml"})
 public class SeleniumHelperTest {
@@ -334,6 +334,14 @@ public class SeleniumHelperTest {
     public void captureScreenshot() throws IOException {
         helper.navigateTo("http://www.google.com");
         helper.captureScreenShot();
+    }
+
+    @Test
+    //@Ignore
+    public void urlCaptureScreenshot() throws IOException {
+        helper.navigateTo("https://maven.apache.org/plugins-archives/maven-surefire-plugin-2.12.4/examples/skipping-test.html");
+        helper.delay(5000);
+        helper.urlCaptureScreenshot("http://maven.apache.org/plugins-archives/maven-surefire-plugin-2.12.4/examples/skipping-test.html");
     }
 
     @Test
