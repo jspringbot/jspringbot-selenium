@@ -76,8 +76,6 @@ public class SeleniumHelper {
 
     protected File screenCaptureDir;
 
-    private Stack<File> screenCaptureDirStack = new Stack<File>();
-
     private Set<String> zoomedDomain = new HashSet<String>();
 
     private int autoZoomOut = 0;
@@ -465,26 +463,7 @@ public class SeleniumHelper {
         byte[] bytes = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
 
         File file = newScreenCaptureFile();
-
-        if (options == null) {
-            FileOutputStream out = null;
-            try {
-
-                LOG.html("Screen captured (%d): <br /> <img src='%s'/>", screenCaptureCtr, file.getName());
-
-                out = new FileOutputStream(file);
-                IOUtils.write(bytes, out);
-
-                return file;
-            } finally {
-                IOUtils.closeQuietly(out);
-            }
-        } else {
-            LOG.html("Screen captured (%d): <br /> <img src='%s'/>", screenCaptureCtr, file.getName());
-
-            BufferedImage fullImg = ImageIO.read(new ByteArrayInputStream(bytes));
-            ImageIO.write(processOption(fullImg, options), "png", file);
-        }
+        saveCapturedImage(options, bytes, file);
 
         return file;
     }
@@ -499,6 +478,8 @@ public class SeleniumHelper {
         URL uri = new URL(screenCaptureName);
         String[] splits = StringUtils.split(uri.getPath(), '/');
         String name = uri.getHost();
+
+        File saveDir = screenCaptureDir;
         if(splits.length > 0) {
             File baseDir = this.createDir(new File(screenCaptureDir, uri.getHost()));
 
@@ -506,7 +487,7 @@ public class SeleniumHelper {
                 baseDir = this.createDir(new File(baseDir, splits[i]));
             }
 
-            screenCaptureDirStack.add(baseDir);
+            saveDir = baseDir;
             name = splits[splits.length - 1];
         }
 
@@ -520,24 +501,20 @@ public class SeleniumHelper {
 
         name = String.format("%s_%d.png", name, ++screenCaptureCtr);
 
-        File file ;
-        if (screenCaptureDirStack.size() == 0){
-            file = new File(name);
-        } else {
-            file = new File(screenCaptureDirStack.pop(), name);
-        }
+        File file = new File(saveDir, name);
+        saveCapturedImage(options, bytes, file);
 
+        return file;
+    }
 
+    private void saveCapturedImage(String options, byte[] bytes, File file) throws IOException {
         if (options == null) {
             FileOutputStream out = null;
             try {
-
                 LOG.html("Screen captured (%d): <br /> <img src='%s'/>", screenCaptureCtr, file.getName());
 
                 out = new FileOutputStream(file);
                 IOUtils.write(bytes, out);
-
-                return file;
             } finally {
                 IOUtils.closeQuietly(out);
             }
@@ -547,8 +524,6 @@ public class SeleniumHelper {
             BufferedImage fullImg = ImageIO.read(new ByteArrayInputStream(bytes));
             ImageIO.write(processOption(fullImg, options), "png", file);
         }
-
-        return file;
     }
 
     File createDir(File dir) {
