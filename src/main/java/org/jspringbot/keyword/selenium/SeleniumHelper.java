@@ -366,7 +366,7 @@ public class SeleniumHelper {
         for(WebElement el:elList) {
             System.out.println("el href=" + el.getAttribute("href"));
             String href = el.getAttribute("href");
-            if (href != null && !StringUtils.isEmpty(href) && !StringUtils.startsWithIgnoreCase(href,"javascript") ) {
+            if (href != null && !StringUtils.isEmpty(href)) { //  && !StringUtils.startsWithIgnoreCase(href,"javascript") ) {
                 links.add(href);
             }
         }
@@ -497,6 +497,10 @@ public class SeleniumHelper {
 
         if(StringUtils.isNotBlank(uri.getRef())) {
             name = name + "#" + URLEncoder.encode(uri.getRef(), "UTF-8");
+        }
+
+        if(name.length() > 150) {
+            name = name.substring(0,150);
         }
 
         name = String.format("%s_%d.png", name, ++screenCaptureCtr);

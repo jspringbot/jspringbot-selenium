@@ -119,6 +119,10 @@ public class BrowserMobProxyBean implements InitializingBean, DisposableBean {
             name += "#" + URLEncoder.encode(uri.getRef(), "UTF-8");
         }
 
+        if(name.length() > 150) {
+            name = name.substring(0,150);
+        }
+
         newHar(name);
     }
 
