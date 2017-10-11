@@ -411,6 +411,19 @@ public class SeleniumHelperTest {
     }
 
     @Test
+    //@Ignore
+    public void testGetAllOnclicks() throws Exception {
+        helper.navigateTo("http://www.yahoo.com.ph");
+        helper.delay(10000);
+        Set<String> onclicks = helper.getAllOnclicks();
+
+        Iterator iter = onclicks.iterator() ;
+        while (iter.hasNext()) {
+            System.out.println("onclicks= " + iter.next());
+        }
+    }
+
+    @Test
     @Ignore
     public void testGetAllButton() throws Exception {
         helper.navigateTo("http://www.google.com.ph");
