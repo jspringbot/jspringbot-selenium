@@ -366,8 +366,25 @@ public class SeleniumHelper {
         for(WebElement el:elList) {
             System.out.println("el href=" + el.getAttribute("href"));
             String href = el.getAttribute("href");
-            if (href != null && !StringUtils.isEmpty(href)) { //  && !StringUtils.startsWithIgnoreCase(href,"javascript") ) {
+            if (href != null && !StringUtils.isEmpty(href)) {
                 links.add(href);
+            }
+        }
+        System.out.println("=================================");
+
+        return links;
+    }
+
+    public LinkedHashSet<String> getAllOnclicks() {
+        LinkedHashSet<String> links = new LinkedHashSet<String>();
+
+        List<WebElement> elList = driver.findElements(By.cssSelector("a"));
+        System.out.println("=================================");
+        for(WebElement el:elList) {
+            System.out.println("el onclick=" + el.getAttribute("onclick"));
+            String onclick = el.getAttribute("onclick");
+            if (onclick != null && !StringUtils.isEmpty(onclick)) {
+                links.add(onclick);
             }
         }
         System.out.println("=================================");
