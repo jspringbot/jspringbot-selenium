@@ -31,7 +31,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Set;
 
-//@Ignore
+@Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:spring/spring-selenium-chrome.xml"})
 public class SeleniumHelperTest {
@@ -411,7 +411,7 @@ public class SeleniumHelperTest {
     }
 
     @Test
-    //@Ignore
+    @Ignore
     public void testGetAllOnclicks() throws Exception {
         helper.navigateTo("http://www.yahoo.com.ph");
         helper.delay(10000);
