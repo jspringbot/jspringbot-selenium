@@ -366,7 +366,7 @@ public class SeleniumHelper {
         for(WebElement el:elList) {
             System.out.println("el href=" + el.getAttribute("href"));
             String href = el.getAttribute("href");
-            if (href != null && !StringUtils.isEmpty(href)) {
+            if (href != null && !StringUtils.isEmpty(href) && !StringUtils.startsWithIgnoreCase(href,"javascript") ) {
                 links.add(href);
             }
         }
