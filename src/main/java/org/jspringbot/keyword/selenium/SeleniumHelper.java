@@ -186,6 +186,10 @@ public class SeleniumHelper {
         }
     }
 
+    public <T> T executeOnDriver(DriverCallable<T> callable) {
+        return callable.call(driver);
+    }
+
     private boolean hasZoomed(String domain) {
         if (zoomedDomain.contains(domain)) {
             return true;
@@ -383,7 +387,7 @@ public class SeleniumHelper {
         for(WebElement el:elList) {
             System.out.println("el onclick=" + el.getAttribute("onclick"));
             String onclick = el.getAttribute("onclick");
-            if (onclick != null && !StringUtils.isEmpty(onclick)) {
+            if (onclick != null && !StringUtils.isEmpty(onclick) && !StringUtils.startsWithIgnoreCase(onclick,"javascript") ) {
                 links.add(onclick);
             }
         }
