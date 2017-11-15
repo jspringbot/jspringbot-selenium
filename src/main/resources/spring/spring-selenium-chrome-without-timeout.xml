@@ -46,8 +46,6 @@
     <property name="sslProxy" value="${selenium.ssl.proxy:none}"/>
   </bean>
 
-  <import resource="spring-browser-mob-proxy.xml"/>
-
   <bean id="webdriver" class="org.openqa.selenium.chrome.ChromeDriver" destroy-method="stopClient">
     <constructor-arg ref="desiredCapabilities"/>
   </bean>
