@@ -44,6 +44,12 @@
     <property name="proxy" value="${selenium.proxy:none}"/>
     <property name="httpProxy" value="${selenium.http.proxy:none}"/>
     <property name="sslProxy" value="${selenium.ssl.proxy:none}"/>
+    <property name="chromeOptionArguments">
+      <list>
+        <value>--disable-dev-shm-usage</value>
+        <value>--no-sandbox</value>
+      </list>
+    </property>
   </bean>
 
   <import resource="spring-browser-mob-proxy.xml"/>
