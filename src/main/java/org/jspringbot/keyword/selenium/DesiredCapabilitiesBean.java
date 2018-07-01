@@ -2,6 +2,7 @@ package org.jspringbot.keyword.selenium;
 
 import com.google.common.io.Files;
 import com.saucelabs.common.Utils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -25,6 +26,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.zip.ZipEntry;
@@ -39,7 +41,9 @@ public class DesiredCapabilitiesBean implements InitializingBean, DisposableBean
 
     private File baseDir;
 
-    private Map<String, Object> chromeOptions = new HashMap<String, Object>();
+    private ChromeOptions chromeOptions;
+
+    private List<String> chromeOptionArguments;
 
     private Map<String, Object> mobileEmulation;
 
@@ -169,7 +173,7 @@ public class DesiredCapabilitiesBean implements InitializingBean, DisposableBean
         System.setProperty("webdriver.ie.driver", driver.getAbsolutePath());
     }
 
-    public void setChromeOptions(Map<String, Object> chromeOptions) {
+    public void setChromeOptions(ChromeOptions chromeOptions) {
         this.chromeOptions = chromeOptions;
     }
 
@@ -422,11 +426,26 @@ public class DesiredCapabilitiesBean implements InitializingBean, DisposableBean
         }
     }
 
+    public void setChromeOptionArguments(List<String> arguments) {
+        this.chromeOptionArguments = arguments;
+    }
+
     public void afterPropertiesSet() throws Exception {
         if (MapUtils.isNotEmpty(mobileEmulation)) {
-            chromeOptions.put("mobileEmulation", mobileEmulation);
+            if(chromeOptions == null) {
+                chromeOptions = new ChromeOptions();
+            }
+            chromeOptions.setExperimentalOption("mobileEmulation", mobileEmulation);
         }
-        if (MapUtils.isNotEmpty(chromeOptions)) {
+
+        if(CollectionUtils.isNotEmpty(chromeOptionArguments)) {
+            if(chromeOptions == null) {
+                chromeOptions = new ChromeOptions();
+            }
+
+            chromeOptions.addArguments(chromeOptionArguments);
+        }
+        if (chromeOptions != null) {
             capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
         }
         if (logPrefs != null) {

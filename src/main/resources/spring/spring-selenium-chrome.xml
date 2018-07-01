@@ -26,13 +26,14 @@
 
   <bean class="org.jspringbot.keyword.selenium.DesiredCapabilitiesBean">
     <constructor-arg ref="desiredCapabilities"/>
-    <property name="chromeDriverVersion" value="${selenium.chrome.driver.version:2.33}"/>
+    <property name="chromeDriverVersion" value="${selenium.chrome.driver.version:2.40}"/>
     <property name="baseDir" value="${selenium.base.dir:none}"/>
     <property name="chromeDrivers">
       <map>
-        <entry key="Windows" value="${selenium.chrome.driver.url.download:http://chromedriver.storage.googleapis.com/}${selenium.chrome.driver.version:2.33}/chromedriver_win32.zip"/>
-        <entry key="MacOS" value="${selenium.chrome.driver.url.download:http://chromedriver.storage.googleapis.com/}${selenium.chrome.driver.version:2.33}/chromedriver_mac64.zip"/>
-        <entry key="Linux" value="${selenium.chrome.driver.url.download:http://chromedriver.storage.googleapis.com/}${selenium.chrome.driver.version:2.33}/chromedriver_linux#{systemProperties['sun.arch.data.model']}.zip"/>
+        <entry key="Windows" value="${selenium.chrome.driver.url.download:http://chromedriver.storage.googleapis.com/}${selenium.chrome.driver.version:2.40}/chromedriver_win32.zip"/>
+        <entry key="MacOS" value="${selenium.chrome.driver.url.download:http://chromedriver.storage.googleapis.com/}${selenium.chrome.driver.version:2.40}/chromedriver_mac64.zip"/>
+        <entry key="Linux" value="${selenium.chrome.driver.url.download:http://chromedriver.storage.googleapis.com/}${selenium.chrome.driver.version:2.40}/chromedriver_linux#{systemProperties['sun.arch.data.model']}.zip"/>
+        <!-- chrome.driver.version:2.40 - works with: chrome version 67.0.3396.99-->
         <!-- chrome.driver.version:2.33 - works with: -->
         <!-- windows: 60.0.3112.90 https://www.slimjet.com/chrome/download-chrome.php?file=win%2Fchrome64_60.0.3112.78.exe-->
         <!-- linux: chrome64_60.0.3112.90.deb-->
@@ -47,6 +48,12 @@
     <property name="proxy" value="${selenium.proxy:none}"/>
     <property name="httpProxy" value="${selenium.http.proxy:none}"/>
     <property name="sslProxy" value="${selenium.ssl.proxy:none}"/>
+    <property name="chromeOptionArguments">
+      <list>
+        <value>--disable-dev-shm-usage</value>
+        <value>--no-sandbox</value>
+      </list>
+    </property>
   </bean>
 
   <import resource="spring-browser-mob-proxy.xml"/>
