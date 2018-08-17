@@ -23,23 +23,21 @@
 
   <bean id="desiredCapabilities" class="org.openqa.selenium.remote.DesiredCapabilities"/>
 
-  <bean class="org.jspringbot.keyword.selenium.DesiredCapabilitiesBean">
+  <bean name="desiredCapabilitiesBean" class="org.jspringbot.keyword.selenium.AppiumDesiredCapabilitiesBean">
     <constructor-arg ref="desiredCapabilities"/>
-    <property name="capabilities" value="${selenium.added.capabilities:none}"/>
-
     <property name="browserName" value="${selenium.appium.browserName:none}"/>
     <property name="app" value="${selenium.appium.app:none}"/>
-    <property name="deviceName" value="${selenium.appium.device.name:emulator-5554}"/>
-    <property name="platformName" value="${selenium.appium.platform.name:ANDROID}"/>
-    <property name="platformVersion" value="${selenium.appium.platform.version:7.0}"/>
+    <property name="deviceName" value="${selenium.appium.device.name:none}"/>
+    <property name="platformName" value="${selenium.appium.platform.name:none}"/>
+    <property name="platformVersion" value="${selenium.appium.platform.version:none}"/>
     <property name="noReset" value="${selenium.appium.no.reset:true}"/>
 
     <!--Android Specific Capabilities-->
-    <property name="appPackage" value="${selenium.appium.android.app.package:gameplay.casinomobile}"/>
-    <property name="appActivity" value="${selenium.appium.android.app.activity:gameplay.casinomobile.PagedSplashActivity}"/>
+    <property name="appPackage" value="${selenium.appium.android.app.package:none}"/>
+    <property name="appActivity" value="${selenium.appium.android.app.activity:none}"/>
   </bean>
 
-  <bean id="webdriver" class="org.jspringbot.keyword.selenium.RemoteWebDriverFactory" factory-method="create" destroy-method="quit">
+  <bean id="webdriver" class="org.openqa.selenium.remote.RemoteWebDriver">
     <constructor-arg type="java.net.URL" value="${selenium.appium.url}"/>
     <constructor-arg type="org.openqa.selenium.Capabilities" ref="desiredCapabilities"/>
   </bean>

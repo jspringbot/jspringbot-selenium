@@ -309,19 +309,6 @@ public class DesiredCapabilitiesBean implements InitializingBean, DisposableBean
         }
     }
 
-    public void setApp(String app) {
-        if (StringUtils.isNotBlank(app) && !StringUtils.equalsIgnoreCase(app, "none")) {
-            File appFile = new File(app);
-            capabilities.setCapability("app", appFile.getAbsoluteFile());
-        }
-    }
-
-    public void setPlatformName(String platformName) {
-        if (!StringUtils.equalsIgnoreCase(platformName, "none")) {
-            capabilities.setCapability("platformName", platformName);
-        }
-    }
-
     public void setPlatformVersion(String platformVersion) {
         if (!StringUtils.equalsIgnoreCase(platformVersion, "none")) {
             capabilities.setCapability("platformVersion", platformVersion);
@@ -331,24 +318,6 @@ public class DesiredCapabilitiesBean implements InitializingBean, DisposableBean
     public void setDeviceName(String deviceName) {
         if (!StringUtils.equalsIgnoreCase(deviceName, "none")) {
             capabilities.setCapability("deviceName", deviceName);
-        }
-    }
-
-    public void setAppPackage(String appPackage) {
-        if (!StringUtils.equalsIgnoreCase(appPackage, "none")) {
-            capabilities.setCapability("appPackage", appPackage);
-        }
-    }
-
-    public void setAppActivity(String appActivity) {
-        if (!StringUtils.equalsIgnoreCase(appActivity, "none")) {
-            capabilities.setCapability("appActivity", appActivity);
-        }
-    }
-
-    public void setNoReset(String noReset) {
-        if (!StringUtils.equalsIgnoreCase(noReset, "none")) {
-            capabilities.setCapability("noReset", Boolean.parseBoolean(noReset));
         }
     }
 
