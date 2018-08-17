@@ -18,9 +18,12 @@
 
 package org.jspringbot.keyword.selenium.web;
 
+import org.jsoup.helper.Validate;
 import org.jspringbot.KeywordInfo;
 import org.jspringbot.keyword.selenium.AbstractSeleniumKeyword;
 import org.jspringbot.keyword.selenium.BrowserMobProxyBean;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -34,15 +37,24 @@ import java.net.URISyntaxException;
         parameters = {"harName"},
         description = "classpath:desc/NewHARFromURL.txt"
 )
-public class NewHARFromURL extends AbstractSeleniumKeyword {
+public class NewHARFromURL extends AbstractSeleniumKeyword implements InitializingBean {
 
-    @Autowired
     private BrowserMobProxyBean proxyBean;
 
     @Override
     public Object execute(Object[] params) throws IOException, URISyntaxException {
+        Validate.notNull(proxyBean, "no proxy mob setup.");
+
         proxyBean.newHarFromUrl(String.valueOf(params[0]));
 
         return null;
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        try {
+            proxyBean = applicationContext.getBean(BrowserMobProxyBean.class);
+        } catch (BeansException ignore) {
+        }
     }
 }

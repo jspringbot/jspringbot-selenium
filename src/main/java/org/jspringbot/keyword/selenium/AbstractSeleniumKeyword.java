@@ -20,10 +20,13 @@ package org.jspringbot.keyword.selenium;
 
 import org.jspringbot.Keyword;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 
 
 public abstract class AbstractSeleniumKeyword implements Keyword {
 
     @Autowired
     protected SeleniumHelper helper;
+    @Autowired
+    protected ApplicationContext applicationContext;
 }

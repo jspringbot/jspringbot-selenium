@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:ctx="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context.xsd">
+
+  <description>Robot Selenium Keywords</description>
+
+  <import resource="spring-selenium-common.xml"/>
+
+  <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="ignoreUnresolvablePlaceholders" value="true"/>
+    <property name="locations">
+      <list>
+        <value>classpath:jspringbot.properties</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="desiredCapabilities" class="org.openqa.selenium.remote.DesiredCapabilities"/>
+
+  <bean class="org.jspringbot.keyword.selenium.DesiredCapabilitiesBean">
+    <constructor-arg ref="desiredCapabilities"/>
+    <property name="capabilities" value="${selenium.added.capabilities:none}"/>
+
+    <property name="browserName" value="${selenium.appium.browserName:none}"/>
+    <property name="app" value="${selenium.appium.app:none}"/>
+    <property name="deviceName" value="${selenium.appium.device.name:emulator-5554}"/>
+    <property name="platformName" value="${selenium.appium.platform.name:ANDROID}"/>
+    <property name="platformVersion" value="${selenium.appium.platform.version:7.0}"/>
+    <property name="noReset" value="${selenium.appium.no.reset:true}"/>
+
+    <!--Android Specific Capabilities-->
+    <property name="appPackage" value="${selenium.appium.android.app.package:gameplay.casinomobile}"/>
+    <property name="appActivity" value="${selenium.appium.android.app.activity:gameplay.casinomobile.PagedSplashActivity}"/>
+  </bean>
+
+  <bean id="webdriver" class="org.jspringbot.keyword.selenium.RemoteWebDriverFactory" factory-method="create" destroy-method="quit">
+    <constructor-arg type="java.net.URL" value="${selenium.appium.url}"/>
+    <constructor-arg type="org.openqa.selenium.Capabilities" ref="desiredCapabilities"/>
+  </bean>
+
+  <bean class="org.jspringbot.keyword.selenium.WebDriverWaitBean">
+    <constructor-arg ref="webdriver"/>
+    <property name="implicitWaitInSeconds" value="${selenium.implicit.wait:30}"/>
+    <property name="pageLoadWaitInSeconds" value="${selenium.page.wait:30}"/>
+    <property name="scriptWaitInSeconds" value="${selenium.script.wait:30}"/>
+    <property name="downloadTimeoutInSeconds" value="${selenium.download.timeout:10}"/>
+  </bean>
+
+  <bean id="helper" class="org.jspringbot.keyword.selenium.SeleniumHelper">
+    <constructor-arg ref="webdriver"/>
+    <property name="jqueryLink" value="${selenium.jquery.link:https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js}"/>
+    <property name="implicitWaitInSeconds" value="${selenium.implicit.wait:30}"/>
+    <property name="screenCaptureDir" value="${selenium.screenshot.folder}"/>
+    <property name="autoZoomIn" value="${selenium.browser.auto.zoom.in:0}"/>
+    <property name="autoZoomOut" value="${selenium.browser.auto.zoom.out:0}"/>
+  </bean>
+
+  <!-- Scan components -->
+  <ctx:component-scan base-package="org.jspringbot.keyword.selenium.web"/>
+  <ctx:annotation-config/>
+</beans>
