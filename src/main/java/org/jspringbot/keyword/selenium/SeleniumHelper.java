@@ -814,13 +814,14 @@ public class SeleniumHelper {
         String attr = el.getAttribute(attribute);
 
         LOG.keywordAppender()
-                .appendArgument("Expected Attribute " + attribute + "=", expectedAttributeValue);
+                .appendArgument("Attribute Name", attribute)
+                .appendArgument("Expected Attribute Value", expectedAttributeValue);
 
         if (StringUtils.isNotEmpty(attr) && attr.equalsIgnoreCase(expectedAttributeValue)) {
             return;
         }
 
-        throw new AssertionError("Element should have contained expected attribute. " + attribute + "=" + attr + " expectedValue=" + expectedAttributeValue);
+        throw new AssertionError("Element should have contained expected attribute.");
     }
 
     public void elementShouldContainType(String locator, String expectedTypeName) {
