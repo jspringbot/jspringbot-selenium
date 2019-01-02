@@ -805,6 +805,23 @@ public class SeleniumHelper {
 
         throw new AssertionError("Element should have contained class.");
     }
+    
+    public void elementShouldContainAttribute(String locator, String attribute, String expectedAttributeValue) {
+        LOG.keywordAppender().appendLocator(locator);
+
+        WebElement el = finder.find(locator, true);
+
+        String attr = el.getAttribute(attribute);
+
+        LOG.keywordAppender()
+                .appendArgument("Expected Attribute " + attribute + "=", expectedAttributeValue);
+
+        if (StringUtils.isNotEmpty(attr) && attr.equalsIgnoreCase(expectedAttributeValue)) {
+            return;
+        }
+
+        throw new AssertionError("Element should have contained expected attribute. " + attribute + "=" + attr + " expectedValue=" + expectedAttributeValue);
+    }
 
     public void elementShouldContainType(String locator, String expectedTypeName) {
         LOG.keywordAppender().appendLocator(locator);

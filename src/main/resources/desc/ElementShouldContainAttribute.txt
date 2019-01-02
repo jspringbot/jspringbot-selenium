@@ -1,0 +1,5 @@
+Verifies element contains attribute name and its expected value
+
+
+*Example:*
+| Element Should Contain Attribute | css=#element | attributeName | attributeValue
